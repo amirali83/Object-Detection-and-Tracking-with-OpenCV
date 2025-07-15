@@ -18,7 +18,6 @@ def create_tracker(tracker_type):
             return cv2.TrackerMOSSE_create()
 
 def iou(boxA, boxB):
-    # Calculate Intersection over Union between two bounding boxes
     xA = max(boxA[0], boxB[0])
     yA = max(boxA[1], boxB[1])
     xB = min(boxA[0] + boxA[2], boxB[0] + boxB[2])
@@ -36,7 +35,7 @@ def iou(boxA, boxB):
 
 def run_tracker(tracker_type, detection_interval=30):
     print(f"Running {tracker_type} Tracker on full video with detection every {detection_interval} frames")
-    cap = cv2.VideoCapture("C:\\Users\\amira\\Desktop\\PROJECT\\test\\person3.mp4")
+    cap = cv2.VideoCapture("C:/Users/shaya/Downloads/videos/person1.MP4")
     ret, frame = cap.read()
     if not ret:
         print("Failed to read video")
@@ -44,7 +43,6 @@ def run_tracker(tracker_type, detection_interval=30):
 
     model = YOLO("yolov5s.pt")
     
-    # Detect initial objects
     results = model.predict(source=frame, conf=0.3)
     boxes = results[0].boxes
     if len(boxes) == 0:
@@ -75,7 +73,6 @@ def run_tracker(tracker_type, detection_interval=30):
 
         display_frame = frame.copy()
 
-        # Update all trackers and draw boxes
         for i, tracker in enumerate(trackers):
             success, box = tracker.update(frame)
             if success:
@@ -88,7 +85,6 @@ def run_tracker(tracker_type, detection_interval=30):
                 cv2.putText(display_frame, f"Lost {labels[i]}", (20, 20 + 20 * i),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
 
-        # Every detection_interval frames: detect new objects and add new trackers if not overlapping
         if frame_count % detection_interval == 0:
             results = model.predict(source=frame, conf=0.3)
             boxes = results[0].boxes
@@ -97,7 +93,6 @@ def run_tracker(tracker_type, detection_interval=30):
                 bbox = (x1, y1, x2 - x1, y2 - y1)
                 label = model.names[int(box.cls[0])]
 
-                # Check overlap with existing trackers
                 overlaps = False
                 for tracker in trackers:
                     success, tracked_box = tracker.update(frame)
@@ -119,13 +114,12 @@ def run_tracker(tracker_type, detection_interval=30):
         cv2.imshow(f"{tracker_type} Tracker", display_frame)
 
         key = cv2.waitKey(30) & 0xFF
-        if key == 27:  # ESC to quit early
+        if key == 27:  
             break
 
     cap.release()
     cv2.destroyAllWindows()
 
-# Run sequentially for each tracker type with detection every 30 frames
 run_tracker("MOSSE", detection_interval=30)
 run_tracker("KCF", detection_interval=30)
 run_tracker("CSRT", detection_interval=30)
