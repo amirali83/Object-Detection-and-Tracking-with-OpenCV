@@ -35,7 +35,7 @@ def iou(boxA, boxB):
 
 def run_tracker(tracker_type, detection_interval=30):
     print(f"Running {tracker_type} Tracker on full video with detection every {detection_interval} frames")
-    cap = cv2.VideoCapture("C:/Users/shaya/Downloads/videos/person1.MP4")
+    cap = cv2.VideoCapture("files/person1.MP4")
     ret, frame = cap.read()
     if not ret:
         print("Failed to read video")
