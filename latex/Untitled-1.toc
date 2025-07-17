@@ -7,3 +7,7 @@
 \contentsline {subsubsection}{How it Works}{4}{section*.10}%
 \contentsline {subsubsection}{Implementation Examples}{4}{section*.11}%
 \contentsline {subsection}{Overall Conclusion}{5}{section*.14}%
+\contentsline {section}{\numberline {3}Object Tracking}{5}{section.3}%
+\contentsline {subsection}{CSRT}{5}{section*.15}%
+\contentsline {subsection}{MOSSE}{5}{section*.16}%
+\contentsline {subsection}{KCF}{5}{section*.17}%

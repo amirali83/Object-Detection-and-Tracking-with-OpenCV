@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.12.10)  17 JUL 2025 17:47
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.12.10)  17 JUL 2025 18:19
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -492,7 +492,7 @@ Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: listings package is loaded.
 Package caption Info: End \AtBeginDocument code.
 \c@lstlisting=\count321
-<C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/logo.jpg, id=40, 113.97581pt x 113.97581pt>
+<C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/logo.jpg, id=56, 113.97581pt x 113.97581pt>
 File: C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/logo.jpg Graphic file (type jpg)
 <use C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/logo.jpg>
 Package pdftex.def Info: C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/logo.jpg  used on input line 48.
@@ -537,32 +537,32 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [2{c:/texlive/2024/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}]
-<C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/person1.jpg, id=75, 587.19376pt x 323.40825pt>
+<C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/person1.jpg, id=95, 587.19376pt x 323.40825pt>
 File: C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/person1.jpg Graphic file (type jpg)
 <use C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/person1.jpg>
 Package pdftex.def Info: C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/person1.jpg  used on input line 127.
 (pdftex.def)             Requested size: 203.83417pt x 112.26189pt.
-<C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/person1Yolo.jpg, id=77, 964.20226pt x 564.9105pt>
+<C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/person1Yolo.jpg, id=97, 964.20226pt x 564.9105pt>
 File: C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/person1Yolo.jpg Graphic file (type jpg)
 <use C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/person1Yolo.jpg>
 Package pdftex.def Info: C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/person1Yolo.jpg  used on input line 133.
 (pdftex.def)             Requested size: 203.83417pt x 119.4191pt.
-<C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/person2.jpg, id=78, 604.05675pt x 341.47575pt>
+<C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/person2.jpg, id=98, 604.05675pt x 341.47575pt>
 File: C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/person2.jpg Graphic file (type jpg)
 <use C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/person2.jpg>
 Package pdftex.def Info: C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/person2.jpg  used on input line 144.
 (pdftex.def)             Requested size: 203.83417pt x 115.22485pt.
-<C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/person2Yolo.jpg, id=79, 961.79324pt x 567.3195pt>
+<C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/person2Yolo.jpg, id=99, 961.79324pt x 567.3195pt>
 File: C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/person2Yolo.jpg Graphic file (type jpg)
 <use C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/person2Yolo.jpg>
 Package pdftex.def Info: C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/person2Yolo.jpg  used on input line 150.
 (pdftex.def)             Requested size: 203.83417pt x 120.23134pt.
-<C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/real.jpg, id=80, 1284.8pt x 722.7pt>
+<C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/real.jpg, id=100, 1284.8pt x 722.7pt>
 File: C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/real.jpg Graphic file (type jpg)
 <use C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/real.jpg>
 Package pdftex.def Info: C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/real.jpg  used on input line 163.
 (pdftex.def)             Requested size: 203.83417pt x 114.65291pt.
-<C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/realYolo.jpg, id=81, 485.4135pt x 387.24675pt>
+<C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/realYolo.jpg, id=101, 485.4135pt x 387.24675pt>
 File: C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/realYolo.jpg Graphic file (type jpg)
 <use C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/realYolo.jpg>
 Package pdftex.def Info: C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/realYolo.jpg  used on input line 169.
@@ -581,7 +581,7 @@ File: C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection
 <use C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/person1.jpg>
 Package pdftex.def Info: C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/person1.jpg  used on input line 203.
 (pdftex.def)             Requested size: 203.83417pt x 112.26189pt.
-<C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/person1CNN.jpg, id=94, 966.61125pt x 564.9105pt>
+<C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/person1CNN.jpg, id=114, 966.61125pt x 564.9105pt>
 File: C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/person1CNN.jpg Graphic file (type jpg)
 <use C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/person1CNN.jpg>
 Package pdftex.def Info: C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/person1CNN.jpg  used on input line 209.
@@ -600,7 +600,7 @@ File: C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection
 <use C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/person2.jpg>
 Package pdftex.def Info: C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/person2.jpg  used on input line 220.
 (pdftex.def)             Requested size: 203.83417pt x 115.22485pt.
-<C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/person2CNN.jpg, id=104, 1156.32pt x 650.43pt>
+<C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/person2CNN.jpg, id=124, 1156.32pt x 650.43pt>
 File: C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/person2CNN.jpg Graphic file (type jpg)
 <use C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/person2CNN.jpg>
 Package pdftex.def Info: C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/person2CNN.jpg  used on input line 226.
@@ -624,21 +624,21 @@ L3 programming layer <2024-11-02>
 LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `Untitled-1.out' has not changed.
-(rerunfilecheck)             Checksum: E3E8708E9BDD995F343AE43ECE249A1E;1222.
+(rerunfilecheck)             Checksum: 220228B88C74A5F04DF80E275377891D;1569.
  ) 
 Here is how much of TeX's memory you used:
- 13844 strings out of 473330
- 218504 string characters out of 5723877
+ 13852 strings out of 473330
+ 218596 string characters out of 5723877
  802813 words of memory out of 5000000
- 36786 multiletter control sequences out of 15000+600000
+ 36790 multiletter control sequences out of 15000+600000
  564869 words of font info for 61 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,11n,79p,319b,543s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb>
-Output written on Untitled-1.pdf (6 pages, 2626642 bytes).
+Output written on Untitled-1.pdf (6 pages, 2628822 bytes).
 PDF statistics:
- 148 PDF objects out of 1000 (max. 8388607)
- 115 compressed objects within 2 object streams
- 33 named destinations out of 1000 (max. 500000)
- 118 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 171 PDF objects out of 1000 (max. 8388607)
+ 138 compressed objects within 2 object streams
+ 37 named destinations out of 1000 (max. 500000)
+ 150 words of extra memory for PDF output out of 10000 (max. 10000000)
 
