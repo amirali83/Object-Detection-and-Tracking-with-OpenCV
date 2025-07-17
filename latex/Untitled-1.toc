@@ -2,4 +2,8 @@
 \contentsline {section}{\numberline {2}Object Detection}{2}{section.2}%
 \contentsline {subsection}{YOLO}{2}{section*.3}%
 \contentsline {subsubsection}{How it Works}{2}{section*.4}%
-\contentsline {subsubsection}{Implementation examples}{3}{section*.5}%
+\contentsline {subsubsection}{Implementation Examples}{3}{section*.5}%
+\contentsline {subsection}{Faster R-CNN}{4}{section*.9}%
+\contentsline {subsubsection}{How it Works}{4}{section*.10}%
+\contentsline {subsubsection}{Implementation Examples}{4}{section*.11}%
+\contentsline {subsection}{Overall Conclusion}{5}{section*.14}%

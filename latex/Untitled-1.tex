@@ -116,12 +116,12 @@ Given an input image, YOLO provides:
     Using the confidence score and class probabilities, the model determines which objects are present and removes overlapping predictions using non-maximum suppression.
 \end{enumerate}
 
-\subsubsection{Implementation examples}
+\subsubsection{Implementation Examples}
 
 You can access the code at \href{https://github.com/amirali83/Signal_Project_2025}{this GitHub repository}.
 These are some examples using code above.
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \begin{subfigure}[b]{0.45\textwidth}
         \includegraphics[width=\textwidth]{C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/person1.jpg}
@@ -138,7 +138,7 @@ These are some examples using code above.
     \label{fig:side_by_side}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \begin{subfigure}[b]{0.45\textwidth}
         \includegraphics[width=\textwidth]{C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/person2.jpg}
@@ -157,7 +157,7 @@ These are some examples using code above.
 
 A webcam can also be used to show that the process runs in real time.
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \begin{subfigure}[b]{0.45\textwidth}
         \includegraphics[width=\textwidth]{C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/real.jpg}
@@ -173,5 +173,72 @@ A webcam can also be used to show that the process runs in real time.
     \caption{real time process}
     \label{fig:side_by_side}
 \end{figure}
+
+\subsection{Faster R-CNN}
+
+Faster R-CNN stands for "Faster Region-based Convolutional Neural Network." It’s one of the most accurate and widely-used object detection algorithms.
+It is based on R-CNN and Fast R-CNN and also using RPN (Region Proposal Network) which makes it faster.
+
+\subsubsection{How it Works}
+
+\begin{enumerate}
+    \item Extracting Features \\
+        Image is passed through a CNN backbone to extract features.
+    \item RPN \\
+        From the extracted features RPN try to propose object regions.
+    \item ROI Pooling \\
+        Object regions are resized so they can be processed again.
+    \item Classification and Boxing \\
+        Regions are classified and box sizes are refined.
+\end{enumerate}
+
+\subsubsection{Implementation Examples}
+
+You can access the code at \href{https://github.com/amirali83/Signal_Project_2025}{this GitHub repository}.
+These are some examples using code above.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/person1.jpg}
+        \caption{raw image}
+        \label{fig:image1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/person1CNN.jpg}
+        \caption{processed image}
+        \label{fig:image2}
+    \end{subfigure}
+    \caption{person 1 video}
+    \label{fig:side_by_side}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/person2.jpg}
+        \caption{raw image}
+        \label{fig:image1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/person2CNN.jpg}
+        \caption{processed image}
+        \label{fig:image2}
+    \end{subfigure}
+    \caption{person 2 video}
+    \label{fig:side_by_side}
+\end{figure}
+
+It can also be used with a webcam; however, it significantly reduces the frame rate and causes noticeable lag on the computer 
+because of heavy computing that it needs.
+
+\subsection{Overall Conclusion}
+
+Based on the FPS that we calculated with each method and the fact that we need to have a real-time function we are going to use YOLO for 
+our detection in the final part.
+
+
 
 \end{document}
