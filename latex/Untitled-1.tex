@@ -250,7 +250,34 @@ There are a lot of ways to detect track moving objects we are going to focus on 
 
 \subsection{CSRT}
 
+CSRT is an object tracking algorithm that use DCF and it emphasizes on accuracy more than anything else.
+You can use for cases like:
 
+\begin{itemize}
+    \item Rotation 
+    \item Occlusion (when object is blocked)
+    \item Object gets bigger or smaller
+    \item Object being similar to background
+\end{itemize}
+
+\subsubsection{How it Works}
+
+There are four main steps:
+\begin{enumerate}
+    \item \textbf{DCF (Discriminative Correlation Filter)} \\
+        Algorithm uses a correlation filter to find the difference between background and object it compares next frame with the main frame to compare differences.
+    \item \textbf{Spatial Reliability Map} \\
+        It tries to ignored background noise and focus on parts that are reliable. Also tries to track pixels that help most to track motion.
+    \item \textbf{Channel Reliability} \\
+        There are different factors in images like color, gradients, etc it will give each one of these different weights based on how reliable each one of these are.
+    \item \textbf{Model Update} \\
+        Based on the previous steps it will update the parameters to give better results in the next frame.
+\end{enumerate}
+
+\subsubsection{Implementation Examples}
+
+You can access the code at \href{https://github.com/amirali83/Signal_Project_2025}{this GitHub repository}. \\
+Also you can see the results in \href{https://github.com/amirali83/Signal_Project_2025}{this GitHub repository}.
 
 \subsection{MOSSE}
 
