@@ -1,0 +1,177 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{caption}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{subcaption}
+\usepackage{xcolor}
+
+\lstset{
+    language=Python,            % Specify the programming language
+    basicstyle=\ttfamily,       % Basic font style
+    keywordstyle=\color{blue},  % Style for keywords
+    commentstyle=\color{green}, % Style for comments
+    stringstyle=\color{red},    % Style for strings
+    frame=single,               % Add a frame around the code
+    numbers=left,               % Line numbers on the left
+    numberstyle=\tiny\color{gray}, % Style for line numbers
+    breaklines=true,            % Allow line breaking
+}
+
+\geometry{margin=1in}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Introduction to Queueing Theory}
+\fancyhead[R]{\thepage}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    {\large \textbf{Project on Signals and Systems}} \\[1.5cm]
+
+    \begin{figure}[ht]
+        \centering
+        \includegraphics[width=0.4\textwidth]{C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/logo.jpg}
+    \end{figure}
+
+    \textbf{Department of Electrical Engineering} \\ 
+    Sharif University of Technology \\[0.5cm]
+    \textbf{Instructor: Dr. Mohamadmehdi Mojahedian} \\[1.5cm]
+    \textbf{Submitted by:} \\[0.5cm]
+    Amirali Yazdiani - 402102765 \\[0.5cm]
+    Saba Sheikh Esmaili - 402102002 \\[0.5cm] 
+    Shayan Karimi - 402102335 \\[2cm]
+    \textbf{Date:} \\[0.5cm]
+    July 2025
+\end{titlepage}
+
+
+\newpage
+
+\tableofcontents
+\newpage
+
+\setcounter{secnumdepth}{1} 
+
+\section{Introduction and Overview}
+
+This project is structured around three core components, each playing a vital role in the overall system:
+
+\begin{enumerate}
+    \item \textbf{Object Detection} – Identifying and locating objects within input data using advanced computer vision techniques.
+    \item \textbf{Object Tracking} – Continuously monitoring the detected objects across frames to understand their motion and behavior.
+    \item \textbf{Final Product} – Integrating the detection and tracking modules into a complete, functional system ready for deployment.
+\end{enumerate}
+
+In the sections that follow, we will provide a comprehensive explanation of each component, detailing the methods used, challenges encountered, and results obtained.
+
+\section{Object Detection}
+
+There are various techniques available for detecting objects within an image. In this project, we focus on two widely used and powerful methods:
+
+\begin{itemize}
+    \item \textbf{YOLO (You Only Look Once)}
+    \item \textbf{Faster R-CNN (Region-based Convolutional Neural Network)}
+\end{itemize}
+
+In the following sections, we will provide a detailed explanation of how each of these methods works, highlighting their architectures, key differences, and practical examples.
+
+\subsection{YOLO}
+
+YOLO is a real-time object detection method, which is essential for our project. As the name suggests, this approach processes the image only once — hence "You Only Look Once." It is known for being both fast and efficient.
+
+Given an input image, YOLO provides:
+\begin{itemize}
+    \item The objects present in the image
+    \item The locations of those objects (bounding boxes)
+    \item The class each object belongs to
+\end{itemize}
+
+\subsubsection{How it Works}
+\begin{enumerate}
+    \item \textbf{Dividing} \\ 
+    The image is divided into an \(S \times S\) grid.
+    
+    \item \textbf{Bounding Box Prediction} \\ 
+    Each grid cell predicts bounding boxes with two key parameters: the coordinates and a confidence score.
+    
+    \item \textbf{Class Prediction} \\ 
+    Each cell also predicts the probability distribution over possible object classes.
+    
+    \item \textbf{Filtering} \\ 
+    Using the confidence score and class probabilities, the model determines which objects are present and removes overlapping predictions using non-maximum suppression.
+\end{enumerate}
+
+\subsubsection{Implementation examples}
+
+You can access the code at \href{https://github.com/amirali83/Signal_Project_2025}{this GitHub repository}.
+These are some examples using code above.
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/person1.jpg}
+        \caption{raw image}
+        \label{fig:image1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/person1Yolo.jpg}
+        \caption{processed image}
+        \label{fig:image2}
+    \end{subfigure}
+    \caption{person 1 video}
+    \label{fig:side_by_side}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/person2.jpg}
+        \caption{raw image}
+        \label{fig:image1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/person2Yolo.jpg}
+        \caption{processed image}
+        \label{fig:image2}
+    \end{subfigure}
+    \caption{person 2 video}
+    \label{fig:side_by_side}
+\end{figure}
+
+A webcam can also be used to show that the process runs in real time.
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/real.jpg}
+        \caption{raw image}
+        \label{fig:image1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{C:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/images/Detection/realYolo.jpg}
+        \caption{processed image}
+        \label{fig:image2}
+    \end{subfigure}
+    \caption{real time process}
+    \label{fig:side_by_side}
+\end{figure}
+
+\end{document}
