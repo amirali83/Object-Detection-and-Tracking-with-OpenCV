@@ -34,4 +34,4 @@ def detect_objects_in_video(video_path, model_path="yolov5s.pt", conf_threshold=
     cap.release()
     cv2.destroyAllWindows()
 
-detect_objects_in_video("C:/Users/shaya/Downloads/videos/person2.MP4")
+detect_objects_in_video("files/person2.MP4")
