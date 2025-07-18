@@ -277,10 +277,58 @@ There are four main steps:
 \subsubsection{Implementation Examples}
 
 You can access the code at \href{https://github.com/amirali83/Signal_Project_2025}{this GitHub repository}. \\
-Also you can see the results in \href{https://github.com/amirali83/Signal_Project_2025}{this GitHub repository}.
+Also you can see the results in \href{https://github.com/amirali83/Signal_Project_2025/tree/main/Results/CSRT}{this GitHub repository}.
 
 \subsection{MOSSE}
 
+Like CSRT, MOSSE is a tracking algorithm, but its strength lies in its speed. It can be used in the same scenarios as CSRT, but it may not perform as well in certain challenging situations and might fail under specific conditions.
+
+\subsubsection{How it Works}
+We are not going to talk about the math behind it as it is already written for us. 
+The core idea of MOSSE is to find a corelation filter that when it is applied to an image it will produce a sharp peak at the targets location and low in other areas.
+Also the calculation are done in frequency domain cause it will be faster than time domain.
+
+\subsubsection{Implementation Examples}
+
+You can access the code at \href{https://github.com/amirali83/Signal_Project_2025}{this GitHub repository}. \\
+Also you can see the results in \href{https://github.com/amirali83/Signal_Project_2025/tree/main/Results/CSRT}{this GitHub repository}.
+
 \subsection{KCF}
+
+
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Feature} & \textbf{MOSSE} & \textbf{KCF} & \textbf{CSRT} \\
+\hline
+Tracking Speed (FPS) & Very High & High & Moderate \\
+\hline
+Accuracy & Low-Medium & Medium & High \\
+\hline
+Robustness to Occlusion & Poor & Fair & Good \\
+\hline
+Scale Adaptation & No & No & Yes \\
+\hline
+Rotation Handling & No & No & Partial \\
+\hline
+Initialization Time & Fast & Fast & Slower \\
+\hline
+Model Size / Memory & Very Low & Low & High \\
+\hline
+Supports Online Learning & Yes & Yes & Yes \\
+\hline
+Performance in Clutter & Poor & Fair & Good \\
+\hline
+Recovery from Loss & No & No & Yes \\
+\hline
+Best Use Case & High-speed real-time & Balanced speed/accuracy & Accurate, complex tracking \\
+\hline
+\end{tabular}
+\caption{Comparison of MOSSE, KCF, and CSRT Trackers}
+\label{tab:trackers}
+\end{table}
+
 
 \end{document}

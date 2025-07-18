@@ -12,4 +12,6 @@
 \contentsline {subsubsection}{How it Works}{6}{section*.16}%
 \contentsline {subsubsection}{Implementation Examples}{6}{section*.17}%
 \contentsline {subsection}{MOSSE}{6}{section*.18}%
-\contentsline {subsection}{KCF}{6}{section*.19}%
+\contentsline {subsubsection}{How it Works}{6}{section*.19}%
+\contentsline {subsubsection}{Implementation Examples}{6}{section*.20}%
+\contentsline {subsection}{KCF}{6}{section*.21}%
