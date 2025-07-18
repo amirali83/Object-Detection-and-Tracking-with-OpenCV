@@ -131,6 +131,11 @@ INPUT c:/texlive/2024/texmf-dist/tex/latex/graphics-cfg/color.cfg
 INPUT c:/texlive/2024/texmf-dist/tex/latex/graphics/mathcolor.ltx
 INPUT c:/texlive/2024/texmf-dist/tex/latex/graphics/mathcolor.ltx
 INPUT c:/texlive/2024/texmf-dist/tex/latex/graphics/mathcolor.ltx
+INPUT c:/texlive/2024/texmf-dist/tex/latex/colortbl/colortbl.sty
+INPUT c:/texlive/2024/texmf-dist/tex/latex/colortbl/colortbl.sty
+INPUT c:/texlive/2024/texmf-dist/tex/latex/tools/array.sty
+INPUT c:/texlive/2024/texmf-dist/tex/latex/tools/array.sty
+INPUT c:/texlive/2024/texmf-dist/tex/latex/graphics/color.sty
 INPUT c:/texlive/2024/texmf-dist/tex/latex/listings/lstlang1.sty
 INPUT c:/texlive/2024/texmf-dist/tex/latex/listings/lstlang1.sty
 INPUT c:/texlive/2024/texmf-dist/tex/latex/listings/lstlang1.sty
@@ -148,7 +153,6 @@ INPUT c:/texlive/2024/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 INPUT c:/texlive/2024/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 INPUT c:/texlive/2024/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 INPUT c:/texlive/2024/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
-INPUT c:/texlive/2024/texmf-dist/tex/latex/graphics/color.sty
 INPUT ./Untitled-1.out
 INPUT ./Untitled-1.out
 INPUT Untitled-1.out

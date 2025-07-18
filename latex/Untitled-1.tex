@@ -12,6 +12,9 @@
 \usepackage{listings}
 \usepackage{subcaption}
 \usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage[table]{xcolor}
+\usepackage{float}
 
 \lstset{
     language=Python,            % Specify the programming language
@@ -254,10 +257,10 @@ CSRT is an object tracking algorithm that use DCF and it emphasizes on accuracy 
 You can use for cases like:
 
 \begin{itemize}
-    \item Rotation 
-    \item Occlusion (when object is blocked)
-    \item Object gets bigger or smaller
-    \item Object being similar to background
+    \item \textbf{Rotation}
+    \item \textbf{Occlusion (when object is blocked)}
+    \item \textbf{Object gets bigger or smaller}
+    \item \textbf{Object being similar to background}
 \end{itemize}
 
 \subsubsection{How it Works}
@@ -287,6 +290,7 @@ Like CSRT, MOSSE is a tracking algorithm, but its strength lies in its speed. It
 We are not going to talk about the math behind it as it is already written for us. 
 The core idea of MOSSE is to find a corelation filter that when it is applied to an image it will produce a sharp peak at the targets location and low in other areas.
 Also the calculation are done in frequency domain cause it will be faster than time domain.
+And at last by updating the model it will try to get better results.
 
 \subsubsection{Implementation Examples}
 
@@ -295,40 +299,71 @@ Also you can see the results in \href{https://github.com/amirali83/Signal_Projec
 
 \subsection{KCF}
 
+KCF (Kernelized Correlation Filters) a real-time object tracking method the builds on methods like MOSSE but change them bu using:
+
+\begin{itemize}
+    \item \textbf{Non-linear kernels to improve accuracy}
+    \item \textbf{Circulant matrices and Fourier transforms to make it faster}
+\end{itemize}
+
+\subsubsection{How it Works}
+
+Like last part we are not going to focus on the math behind it but key points.
+
+\begin{enumerate}
+    \item \textbf{Correlation Filters for Tracking} \\
+        Like MOSSE tries to pin a location for the target.
+    \item \textbf{Circulant Matrix Trick} \\
+        This method makes a circulant matrix by saving all cyclic shifts of an image without storing them and by using FFT it will compute responses efficient.
+    \item \textbf{Kernel Trick}
+\end{enumerate}
+
+And finally by updating model it will try to get better.
+\subsubsection{Implementation Examples}
+
+You can access the code at \href{https://github.com/amirali83/Signal_Project_2025}{this GitHub repository}. \\
+Also you can see the results in \href{https://github.com/amirali83/Signal_Project_2025/tree/main/Results/CSRT}{this GitHub repository}.
+
+\subsection{Overall Conclusion}
+Based on the observed FPS (frames per second) from each tracking method, and considering that the main priority is to achieve real-time performance, the CSRT algorithm is clearly not suitable for our needs due to its relatively slow speed.
+
+This narrows our options down to KCF and MOSSE, both of which offer significantly higher speed and are capable of running in real-time.
+
+To make it short:
+
+\begin{itemize}
+    \item MOSSE is the fastest, offering extremely high frame rates, but it may suffer from reduced accuracy and robustness in complex scenarios.
+    \item KCF, while slightly slower than MOSSE, provides better tracking accuracy thanks to its use of kernelized correlation filters, though it still lacks built-in support for scale variation.
+\end{itemize}
 
 
-\begin{table}[h]
+
+\begin{table}[H]
 \centering
-\begin{tabular}{|l|c|c|c|}
-\hline
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{} lccc @{}}
+\toprule
+\rowcolor{gray!20}
 \textbf{Feature} & \textbf{MOSSE} & \textbf{KCF} & \textbf{CSRT} \\
-\hline
-Tracking Speed (FPS) & Very High & High & Moderate \\
-\hline
-Accuracy & Low-Medium & Medium & High \\
-\hline
-Robustness to Occlusion & Poor & Fair & Good \\
-\hline
-Scale Adaptation & No & No & Yes \\
-\hline
-Rotation Handling & No & No & Partial \\
-\hline
-Initialization Time & Fast & Fast & Slower \\
-\hline
-Model Size / Memory & Very Low & Low & High \\
-\hline
-Supports Online Learning & Yes & Yes & Yes \\
-\hline
-Performance in Clutter & Poor & Fair & Good \\
-\hline
-Recovery from Loss & No & No & Yes \\
-\hline
-Best Use Case & High-speed real-time & Balanced speed/accuracy & Accurate, complex tracking \\
-\hline
+\midrule
+Tracking Speed (FPS)        & \textbf{Very High} & High           & Moderate        \\
+Accuracy                    & Low–Medium         & Medium         & \textbf{High}   \\
+Robustness to Occlusion     & Poor               & Fair           & \textbf{Good}   \\
+Scale Adaptation            & No                 & No             & \textbf{Yes}    \\
+Rotation Handling           & No                 & No             & Partial         \\
+Initialization Time         & \textbf{Fast}      & \textbf{Fast}  & Slower          \\
+Model Size / Memory         & \textbf{Very Low}  & Low            & \textbf{High}   \\
+Supports Online Learning    & Yes                & Yes            & Yes             \\
+Performance in Clutter      & Poor               & Fair           & \textbf{Good}   \\
+Recovery from Loss          & No                 & No             & \textbf{Yes}    \\
+Best Use Case               & Real-time speed    & Balanced       & Complex tracking \\
+\bottomrule
 \end{tabular}
-\caption{Comparison of MOSSE, KCF, and CSRT Trackers}
+\caption{Qualitative comparison of MOSSE, KCF, and CSRT tracking algorithms}
 \label{tab:trackers}
 \end{table}
+
+\section{Our Algorithm}
 
 
 \end{document}

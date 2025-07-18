@@ -14,4 +14,8 @@
 \contentsline {subsection}{MOSSE}{6}{section*.18}%
 \contentsline {subsubsection}{How it Works}{6}{section*.19}%
 \contentsline {subsubsection}{Implementation Examples}{6}{section*.20}%
-\contentsline {subsection}{KCF}{6}{section*.21}%
+\contentsline {subsection}{KCF}{7}{section*.21}%
+\contentsline {subsubsection}{How it Works}{7}{section*.22}%
+\contentsline {subsubsection}{Implementation Examples}{7}{section*.23}%
+\contentsline {subsection}{Overall Conclusion}{7}{section*.24}%
+\contentsline {section}{\numberline {4}Our Algorithm}{8}{section.4}%
