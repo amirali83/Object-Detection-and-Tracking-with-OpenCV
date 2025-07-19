@@ -34,3 +34,6 @@ while cap.isOpened():
 
     cv2.imshow('YOLOv8 Detection - Press Q to Quit', annotated_frame)
     out.write(annotated_frame)
+
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
