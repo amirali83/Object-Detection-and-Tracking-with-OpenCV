@@ -3,7 +3,7 @@ import time
 import os
 from ultralytics import YOLO
 
-model = YOLO("yolov8s.pt") 
+model = YOLO("yolov8s.pt")  
 
 video_path = "C:\\Users\\shaya\\Downloads\\videos\\person2.mp4"
 cap = cv2.VideoCapture(video_path)
@@ -21,16 +21,24 @@ while cap.isOpened():
         break
 
     start_time = time.time()
+
     results = model(frame)
     annotated_frame = results[0].plot()
+
     end_time = time.time()
     elapsed = end_time - start_time
     fps_display = 1 / (elapsed + 1e-8)
+
     num_detections = len(results[0].boxes)
 
-    cv2.putText(annotated_frame, f"FPS: {fps_display:.2f}", (10, 30), ...)
-    cv2.putText(annotated_frame, f"Detections: {num_detections}", (10, 70), ...)
-    cv2.putText(annotated_frame, f"Time: {elapsed:.2f}s", (10, 110), ...)
+    cv2.putText(annotated_frame, f"FPS: {fps_display:.2f}", (10, 30),
+                cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+
+    cv2.putText(annotated_frame, f"Detections: {num_detections}", (10, 70),
+                cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 0), 2)
+
+    cv2.putText(annotated_frame, f"Time: {elapsed:.2f}s", (10, 110),
+                cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
 
     cv2.imshow('YOLOv8 Detection - Press Q to Quit', annotated_frame)
     out.write(annotated_frame)
