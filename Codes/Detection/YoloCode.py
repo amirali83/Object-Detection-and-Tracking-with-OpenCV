@@ -27,4 +27,7 @@ while cap.isOpened():
     elapsed = end_time - start_time
     fps_display = 1 / (elapsed + 1e-8)
     num_detections = len(results[0].boxes)
-    
+
+    cv2.putText(annotated_frame, f"FPS: {fps_display:.2f}", (10, 30), ...)
+    cv2.putText(annotated_frame, f"Detections: {num_detections}", (10, 70), ...)
+    cv2.putText(annotated_frame, f"Time: {elapsed:.2f}s", (10, 110), ...)
