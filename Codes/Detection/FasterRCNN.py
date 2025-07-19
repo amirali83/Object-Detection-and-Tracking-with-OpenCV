@@ -7,3 +7,6 @@ import os
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
+model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=True)
+model.to(device)
+model.eval()
