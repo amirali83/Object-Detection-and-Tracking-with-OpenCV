@@ -5,17 +5,17 @@ from ultralytics import YOLO
 
 def iou(bbox1, bbox2):
     x1, y1, x2, y2 = bbox1
-    x1_p, y1_p, x2_p, y2_p = bbox2
+    x1p, y1p, x2p, y2p = bbox2
 
-    xi1, yi1 = max(x1, x1_p), max(y1, y1_p)
-    xi2, yi2 = min(x2, x2_p), min(y2, y2_p)
+    xi1, yi1 = max(x1, x1p), max(y1, y1p)
+    xi2, yi2 = min(x2, x2p), min(y2, y2p)
     inter_area = max(0, xi2 - xi1) * max(0, yi2 - yi1)
 
     bbox1_area = (x2 - x1) * (y2 - y1)
-    bbox2_area = (x2_p - x1_p) * (y2_p - y1_p)
+    bbox2_area = (x2p - x1p) * (y2p - y1p)
     union_area = bbox1_area + bbox2_area - inter_area
 
-    return inter_area / union_area if union_area > 0 else 0
+    return inter_area / union_area if union_area else 0
 
 model = YOLO('yolov5s.pt')
 cap = cv2.VideoCapture("files/person1.mp4")
@@ -25,7 +25,7 @@ detect_interval = 15
 fps_time = time.time()
 trackers = []
 
-print("[INFO] Optimized detection + multi-object tracking (MOSSE). Press 'q' to quit.")
+print("[INFO] Detection + Tracking running... Press 'q' to quit.")
 
 while True:
     ret, frame = cap.read()
@@ -37,8 +37,6 @@ while True:
     fps_time = current_time
     frame_count += 1
 
-    updated_ids = set()
-
     if frame_count % detect_interval == 0:
         results = model(frame)[0]
         detections = []
@@ -49,48 +47,57 @@ while True:
             x1, y1, x2, y2 = map(int, box.xyxy[0])
             detections.append((label, (x1, y1, x2, y2)))
 
-        for label, det_bbox in detections:
-            matched = False
+        unmatched_detections = []
+
+        for det_label, det_bbox in detections:
+            best_match = None
+            best_iou = 0.0
             for trk in trackers:
-                if trk['label'] == label:
-                    x, y, w, h = trk['bbox']
-                    iou_score = iou((x, y, x + w, y + h), det_bbox)
-                    if iou_score > 0.3:
-                        trk['tracker'] = cv2.legacy.TrackerMOSSE_create()
-                        trk['tracker'].init(frame, (det_bbox[0], det_bbox[1], det_bbox[2] - det_bbox[0], det_bbox[3] - det_bbox[1]))
-                        trk['bbox'] = (det_bbox[0], det_bbox[1], det_bbox[2] - det_bbox[0], det_bbox[3] - det_bbox[1])
-                        matched = True
-                        updated_ids.add(trk['id'])
-                        break
-            if not matched:
-                tracker = cv2.legacy.TrackerMOSSE_create()
-                tracker.init(frame, (det_bbox[0], det_bbox[1], det_bbox[2] - det_bbox[0], det_bbox[3] - det_bbox[1]))
-                new_id = str(uuid.uuid4())[:8]
-                trackers.append({'id': new_id, 'tracker': tracker, 'label': label, 'bbox': (det_bbox[0], det_bbox[1], det_bbox[2] - det_bbox[0], det_bbox[3] - det_bbox[1])})
-                updated_ids.add(new_id)
+                if trk['label'] != det_label:
+                    continue
+                tx, ty, tw, th = trk['bbox']
+                tiou = iou((tx, ty, tx + tw, ty + th), det_bbox)
+                if tiou > best_iou:
+                    best_iou = tiou
+                    best_match = trk
+
+            if best_iou > 0.4:
+                x1, y1, x2, y2 = det_bbox
+                new_box = (x1, y1, x2 - x1, y2 - y1)
+                best_match['tracker'] = cv2.legacy.TrackerMOSSE_create()
+                best_match['tracker'].init(frame, new_box)
+                best_match['bbox'] = new_box
+            else:
+                unmatched_detections.append((det_label, det_bbox))
+
+        for det_label, det_bbox in unmatched_detections:
+            x1, y1, x2, y2 = det_bbox
+            bbox = (x1, y1, x2 - x1, y2 - y1)
+            tracker = cv2.legacy.TrackerMOSSE_create()
+            tracker.init(frame, bbox)
+            obj_id = str(uuid.uuid4())[:8]
+            trackers.append({'id': obj_id, 'label': det_label, 'tracker': tracker, 'bbox': bbox})
     else:
         for trk in trackers:
             success, bbox = trk['tracker'].update(frame)
             if success:
                 trk['bbox'] = bbox
-                updated_ids.add(trk['id'])
 
-    current_ids = set()
-    valid_trackers = []
+    visible_trackers = []
     for trk in trackers:
         x, y, w, h = map(int, trk['bbox'])
         if w > 0 and h > 0:
-            current_ids.add(trk['id'])
-            valid_trackers.append(trk)
+            visible_trackers.append(trk)
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
-            cv2.putText(frame, f"{trk['label']} {trk['id']}", (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
+            cv2.putText(frame, f"{trk['label']} {trk['id']}", (x, y - 10),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
 
-    trackers = valid_trackers
+    trackers = visible_trackers
 
     cv2.putText(frame, f'FPS: {fps:.2f}', (10, 30),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 255), 2)
 
-    cv2.imshow('Optimized YOLO + MOSSE Tracker', frame)
+    cv2.imshow('Fast YOLO + MOSSE Tracking', frame)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
