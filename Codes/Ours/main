@@ -1,21 +1,22 @@
 import cv2
 import time
+import uuid
 from ultralytics import YOLO
 
 model = YOLO('yolov5s.pt')
 
-video_path = "files/person1.mp4"
+video_path = "files/person2.mp4"
 cap = cv2.VideoCapture(video_path)
 
 frame_count = 0
 detect_interval = 10
-
-trackers = []
-labels = []
-prev_labels = set()
 fps_time = time.time()
 
-print("[INFO] Starting detection and tracking... Press 'q' to quit.")
+# Each tracker is a dict: {'id': str, 'tracker': MOSSE object, 'label': str}
+active_trackers = []
+prev_ids = set()
+
+print("[INFO] Starting detection and multi-object tracking... Press 'q' to quit.")
 
 while True:
     ret, frame = cap.read()
@@ -27,13 +28,12 @@ while True:
     fps_time = current_time
 
     frame_count += 1
-    current_labels = set()
+    current_ids = set()
 
     if frame_count % detect_interval == 0:
-        trackers.clear()
-        labels.clear()
-
+        active_trackers.clear()
         results = model(frame)[0]
+
         for box in results.boxes:
             cls_id = int(box.cls[0])
             conf = float(box.conf[0])
@@ -41,33 +41,44 @@ while True:
             x1, y1, x2, y2 = map(int, box.xyxy[0])
 
             tracker = cv2.legacy.TrackerMOSSE_create()
-            tracker.init(frame, (x1, y1, x2 - x1, y2 - y1))
-            trackers.append(tracker)
-            labels.append(label)
-            current_labels.add(label)
+            bbox = (x1, y1, x2 - x1, y2 - y1)
+            tracker.init(frame, bbox)
+
+            obj_id = str(uuid.uuid4())[:8]  # short unique ID
+            active_trackers.append({
+                'id': obj_id,
+                'tracker': tracker,
+                'label': label
+            })
+            current_ids.add(obj_id)
     else:
-        for tracker, label in zip(trackers, labels):
-            success, bbox = tracker.update(frame)
+        updated_trackers = []
+        for obj in active_trackers:
+            success, bbox = obj['tracker'].update(frame)
             if success:
                 x, y, w, h = map(int, bbox)
                 cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 2)
-                cv2.putText(frame, label, (x, y - 10),
+                cv2.putText(frame, f"{obj['label']} {obj['id']}", (x, y - 10),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 0), 2)
-                current_labels.add(label)
+                updated_trackers.append(obj)
+                current_ids.add(obj['id'])
 
-    new_objects = current_labels - prev_labels
-    gone_objects = prev_labels - current_labels
-    if new_objects:
-        print(f"[NEW] Objects entered: {new_objects}")
-    if gone_objects:
-        print(f"[GONE] Objects left: {gone_objects}")
+        active_trackers = updated_trackers
 
-    prev_labels = current_labels
+    new_ids = current_ids - prev_ids
+    gone_ids = prev_ids - current_ids
+
+    if new_ids:
+        print(f"[NEW] Objects entered: {new_ids}")
+    if gone_ids:
+        print(f"[GONE] Objects left: {gone_ids}")
+
+    prev_ids = current_ids
 
     cv2.putText(frame, f'FPS: {fps:.2f}', (10, 30),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 255), 2)
 
-    cv2.imshow('YOLO Detection + MOSSE Tracking', frame)
+    cv2.imshow('YOLO + MOSSE Multi-Object Tracking', frame)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
