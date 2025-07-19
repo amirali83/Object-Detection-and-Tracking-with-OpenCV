@@ -44,3 +44,5 @@ while cap.isOpened():
     ret, frame = cap.read()
     if not ret:
         break
+
+    start_time = time.time()
