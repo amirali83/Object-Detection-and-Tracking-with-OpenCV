@@ -46,3 +46,6 @@ while cap.isOpened():
         break
 
     start_time = time.time()
+
+    img_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    img_tensor = F.to_tensor(img_rgb).unsqueeze(0).to(device)
