@@ -36,3 +36,11 @@ fps_input = cap.get(cv2.CAP_PROP_FPS)
 output_path = os.path.join(os.path.dirname(video_path), "faster_rcnn_output.mp4")
 fourcc = cv2.VideoWriter_fourcc(*'mp4v')
 out = cv2.VideoWriter(output_path, fourcc, fps_input, (width, height))
+
+frame_count = 0
+total_fps = 0
+
+while cap.isOpened():
+    ret, frame = cap.read()
+    if not ret:
+        break
