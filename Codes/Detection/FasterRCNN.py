@@ -52,3 +52,14 @@ while cap.isOpened():
 
     with torch.no_grad():
         outputs = model(img_tensor)
+
+    detected_objects = 0
+
+    for box, label, score in zip(outputs[0]['boxes'], outputs[0]['labels'], outputs[0]['scores']):
+        if score > CONFIDENCE_THRESHOLD:
+            detected_objects += 1
+            x1, y1, x2, y2 = map(int, box)
+            class_name = COCO_INSTANCE_CATEGORY_NAMES[label]
+            cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
+            cv2.putText(frame, f"{class_name} {score:.2f}", (x1, y1 - 5),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 0), 1)
