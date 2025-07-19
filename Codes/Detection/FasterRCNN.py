@@ -75,3 +75,11 @@ while cap.isOpened():
 
     cv2.putText(frame, f"Objects: {detected_objects}", (10, 70),
                 cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 255), 2)
+    
+    
+    cv2.imshow("Faster R-CNN Detection", frame)
+    out.write(frame)
+
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
