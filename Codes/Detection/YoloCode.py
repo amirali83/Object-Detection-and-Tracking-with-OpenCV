@@ -19,8 +19,12 @@ while cap.isOpened():
     ret, frame = cap.read()
     if not ret:
         break
-    
+
     start_time = time.time()
     results = model(frame)
     annotated_frame = results[0].plot()
     end_time = time.time()
+    elapsed = end_time - start_time
+    fps_display = 1 / (elapsed + 1e-8)
+    num_detections = len(results[0].boxes)
+    
