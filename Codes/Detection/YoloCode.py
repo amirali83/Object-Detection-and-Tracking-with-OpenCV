@@ -14,3 +14,8 @@ fps = cap.get(cv2.CAP_PROP_FPS)
 
 output_path = os.path.join(os.path.dirname(video_path), "output_with_stats.avi")
 out = cv2.VideoWriter(output_path, cv2.VideoWriter_fourcc(*'XVID'), fps, (width, height))
+
+while cap.isOpened():
+    ret, frame = cap.read()
+    if not ret:
+        break
