@@ -31,3 +31,6 @@ while cap.isOpened():
     cv2.putText(annotated_frame, f"FPS: {fps_display:.2f}", (10, 30), ...)
     cv2.putText(annotated_frame, f"Detections: {num_detections}", (10, 70), ...)
     cv2.putText(annotated_frame, f"Time: {elapsed:.2f}s", (10, 110), ...)
+
+    cv2.imshow('YOLOv8 Detection - Press Q to Quit', annotated_frame)
+    out.write(annotated_frame)
