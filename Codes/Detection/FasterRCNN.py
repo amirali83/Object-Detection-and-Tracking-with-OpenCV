@@ -23,3 +23,9 @@ COCO_INSTANCE_CATEGORY_NAMES = [     '__background__', 'person', 'bicycle', 'car
     'toaster', 'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors', 'teddy bear',
     'hair drier', 'toothbrush'
 ]
+
+CONFIDENCE_THRESHOLD = 0.7
+
+
+
+
