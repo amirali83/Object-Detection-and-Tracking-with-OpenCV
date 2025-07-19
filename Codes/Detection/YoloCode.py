@@ -19,3 +19,8 @@ while cap.isOpened():
     ret, frame = cap.read()
     if not ret:
         break
+    
+    start_time = time.time()
+    results = model(frame)
+    annotated_frame = results[0].plot()
+    end_time = time.time()
