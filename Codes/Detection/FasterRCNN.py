@@ -49,3 +49,6 @@ while cap.isOpened():
 
     img_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     img_tensor = F.to_tensor(img_rgb).unsqueeze(0).to(device)
+
+    with torch.no_grad():
+        outputs = model(img_tensor)
