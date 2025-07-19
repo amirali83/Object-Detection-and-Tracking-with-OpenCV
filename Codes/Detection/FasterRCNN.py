@@ -26,6 +26,5 @@ COCO_INSTANCE_CATEGORY_NAMES = [     '__background__', 'person', 'bicycle', 'car
 
 CONFIDENCE_THRESHOLD = 0.7
 
-
-
-
+video_path = "C:\\Users\\shaya\\Downloads\\videos\\person1.mp4"
+cap = cv2.VideoCapture(video_path)
