@@ -63,3 +63,9 @@ while cap.isOpened():
             cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
             cv2.putText(frame, f"{class_name} {score:.2f}", (x1, y1 - 5),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 0), 1)
+    
+    
+    end_time = time.time()
+    fps = 1 / (end_time - start_time + 1e-8)
+    total_fps += fps
+    frame_count += 1
