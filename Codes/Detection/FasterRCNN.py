@@ -28,3 +28,7 @@ CONFIDENCE_THRESHOLD = 0.7
 
 video_path = "C:\\Users\\shaya\\Downloads\\videos\\person1.mp4"
 cap = cv2.VideoCapture(video_path)
+
+width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+fps_input = cap.get(cv2.CAP_PROP_FPS)
