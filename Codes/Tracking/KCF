@@ -1,0 +1,25 @@
+import cv2
+import time
+from ultralytics import YOLO
+
+def create_tracker():
+    if hasattr(cv2, 'legacy'):
+        return cv2.legacy.TrackerKCF_create()
+    else:
+        return cv2.TrackerKCF_create()
+
+def run_yolo_kcf(video_source=0, detection_interval=30, conf_threshold=0.3, output_file="output.avi"):
+   
+    cap = cv2.VideoCapture(video_source)
+    
+   
+    model = YOLO("yolov5s.pt")
+    
+   
+    width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+    height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    fps_input = cap.get(cv2.CAP_PROP_FPS) or 30.0  
+    
+
+    fourcc = cv2.VideoWriter_fourcc(*'XVID')  
+    out = cv2.VideoWriter(output_file, fourcc, fps_input, (width, height))
