@@ -30,8 +30,13 @@ def center_distance(box1, box2):
     cx2, cy2 = x2 + w2 / 2, y2 + h2 / 2
     return math.hypot(cx1 - cx2, cy1 - cy2)
 
+track_id_counter = 0
+
 class Track:
     def __init__(self, tracker, label, bbox):
+        global track_id_counter
+        self.id = track_id_counter
+        track_id_counter += 1
         self.tracker = tracker
         self.label = label
         self.bbox = bbox
@@ -99,7 +104,8 @@ while cap.isOpened():
             if w > 0 and h > 0:
                 track.correct((x, y, w, h))
                 cv2.rectangle(annotated_frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
-                cv2.putText(annotated_frame, track.label, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
+                cv2.putText(annotated_frame, f"{track.label} ID:{track.id}", (x, y - 10),
+                            cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
                 updated_tracks.append(track)
         else:
             track.missed += 1
@@ -107,7 +113,8 @@ while cap.isOpened():
                 pred_bbox = track.predict()
                 x, y, w, h = [int(v) for v in pred_bbox]
                 cv2.rectangle(annotated_frame, (x, y), (x + w, y + h), (255, 255, 0), 2)
-                cv2.putText(annotated_frame, track.label + " (pred)", (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 0), 2)
+                cv2.putText(annotated_frame, f"{track.label} ID:{track.id} (pred)", (x, y - 10),
+                            cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 0), 2)
                 updated_tracks.append(track)
 
     tracks = updated_tracks
