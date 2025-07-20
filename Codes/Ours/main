@@ -3,12 +3,29 @@ from ultralytics import YOLO
 import time
 import math
 import numpy as np
+import torch
+import torchvision.transforms as T
+from torchvision.models import resnet18
+import torch.nn.functional as F
 
 model = YOLO("yolov8n.pt")
-cap = cv2.VideoCapture("files/person1.mp4")
+cap = cv2.VideoCapture("files/person4.mp4")
 
 fps = cap.get(cv2.CAP_PROP_FPS)
 delay = int(1000 / fps) if fps > 0 else 33
+
+transform = T.Compose([
+    T.ToPILImage(),
+    T.Resize((128, 64)),
+    T.ToTensor(),
+    T.Normalize([0.5]*3, [0.5]*3)
+])
+
+reid_model = resnet18(pretrained=True)
+reid_model.fc = torch.nn.Identity()
+reid_model.eval()
+
+track_id_counter = 0
 
 def iou(box1, box2):
     x1, y1, w1, h1 = box1
@@ -30,16 +47,25 @@ def center_distance(box1, box2):
     cx2, cy2 = x2 + w2 / 2, y2 + h2 / 2
     return math.hypot(cx1 - cx2, cy1 - cy2)
 
-track_id_counter = 0
+def extract_embedding(frame, bbox):
+    x, y, w, h = [int(v) for v in bbox]
+    crop = frame[y:y+h, x:x+w]
+    if crop.size == 0:
+        return torch.zeros(512)
+    tensor = transform(crop).unsqueeze(0)
+    with torch.no_grad():
+        emb = reid_model(tensor)
+    return emb.squeeze()
 
 class Track:
-    def __init__(self, tracker, label, bbox):
+    def __init__(self, tracker, label, bbox, embedding):
         global track_id_counter
         self.id = track_id_counter
         track_id_counter += 1
         self.tracker = tracker
         self.label = label
         self.bbox = bbox
+        self.embedding = embedding
         self.missed = 0
         self.kalman = cv2.KalmanFilter(4, 2)
         self.kalman.measurementMatrix = np.array([[1, 0, 0, 0], [0, 1, 0, 0]], np.float32)
@@ -65,6 +91,7 @@ tracks = []
 frame_count = 0
 max_missed = 10
 match_distance_thresh = 50
+appearance_thresh = 0.7
 prev_time = time.time()
 
 while cap.isOpened():
@@ -81,17 +108,22 @@ while cap.isOpened():
         for box, cls in zip(boxes, classes):
             x1, y1, x2, y2 = map(int, box.tolist())
             new_box = (x1, y1, x2 - x1, y2 - y1)
+            new_emb = extract_embedding(frame, new_box)
             matched = False
+
             for track in tracks:
-                if iou(new_box, track.bbox) > 0.5 or center_distance(new_box, track.bbox) < match_distance_thresh:
+                appearance_sim = F.cosine_similarity(track.embedding.unsqueeze(0), new_emb.unsqueeze(0)).item()
+                if iou(new_box, track.bbox) > 0.5 or center_distance(new_box, track.bbox) < match_distance_thresh or appearance_sim > appearance_thresh:
                     matched = True
                     track.correct(new_box)
+                    track.embedding = new_emb
                     track.missed = 0
                     break
+
             if not matched:
                 tracker = cv2.TrackerKCF_create()
                 tracker.init(frame, new_box)
-                new_track = Track(tracker, model.names[int(cls)], new_box)
+                new_track = Track(tracker, model.names[int(cls)], new_box, new_emb)
                 tracks.append(new_track)
 
     annotated_frame = frame.copy()
@@ -124,7 +156,7 @@ while cap.isOpened():
     prev_time = curr_time
     cv2.putText(annotated_frame, f"FPS: {fps_display:.2f}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 255), 2)
 
-    cv2.imshow("YOLO + KCF + Kalman Tracking", annotated_frame)
+    cv2.imshow("YOLO + KCF + Kalman + ReID", annotated_frame)
     if cv2.waitKey(delay) & 0xFF == ord("q"):
         break
 
