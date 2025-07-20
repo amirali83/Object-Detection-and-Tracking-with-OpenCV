@@ -11,7 +11,9 @@ delay = int(1000 / fps) if fps > 0 else 33
 trackers = []
 labels = []
 bboxes = []
+missed_frames = []
 frame_count = 0
+max_missed = 10
 
 while cap.isOpened():
     ret, frame = cap.read()
@@ -37,7 +39,7 @@ while cap.isOpened():
                     matched = True
                     break
             if not matched:
-                tracker = cv2.legacy.TrackerMOSSE_create()
+                tracker = cv2.TrackerKCF_create()
                 tracker.init(frame, new_box)
                 new_trackers.append(tracker)
                 new_labels.append(model.names[int(cls)])
@@ -46,28 +48,38 @@ while cap.isOpened():
         trackers.extend(new_trackers)
         labels.extend(new_labels)
         bboxes.extend(new_bboxes)
+        missed_frames.extend([0] * len(new_trackers))
 
     annotated_frame = frame.copy()
     updated_trackers = []
     updated_labels = []
     updated_bboxes = []
+    updated_missed = []
 
-    for tracker, label in zip(trackers, labels):
-        success, bbox = tracker.update(frame)
+    for tracker, label, bbox, missed in zip(trackers, labels, bboxes, missed_frames):
+        success, new_bbox = tracker.update(frame)
         if success:
-            x, y, w, h = [int(v) for v in bbox]
+            x, y, w, h = [int(v) for v in new_bbox]
             if w > 0 and h > 0:
                 cv2.rectangle(annotated_frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
                 cv2.putText(annotated_frame, label, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
                 updated_trackers.append(tracker)
                 updated_labels.append(label)
                 updated_bboxes.append((x, y, w, h))
+                updated_missed.append(0)
+        else:
+            if missed + 1 < max_missed:
+                updated_trackers.append(tracker)
+                updated_labels.append(label)
+                updated_bboxes.append(bbox)
+                updated_missed.append(missed + 1)
 
     trackers = updated_trackers
     labels = updated_labels
     bboxes = updated_bboxes
+    missed_frames = updated_missed
 
-    cv2.imshow("YOLO + MOSSE Tracking", annotated_frame)
+    cv2.imshow("YOLO + KCF Tracking", annotated_frame)
     if cv2.waitKey(delay) & 0xFF == ord("q"):
         break
 
