@@ -73,3 +73,27 @@ def create_tracker():
                     cv2.putText(frame, f"Lost {labels[i]}", (10, 30 + 30 * i),
                                 cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
 
+
+        end_time = time.time()
+        frame_time = end_time - start_time
+        total_time += frame_time
+
+        fps = frame_count / total_time
+        cv2.putText(frame, f"FPS: {fps:.2f}", (10, 30),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 0), 2)
+
+    
+        cv2.imshow("YOLO + MOSSE", frame)
+        out.write(frame)
+
+        if cv2.waitKey(1) & 0xFF == 27: 
+            break
+
+    cap.release()
+    out.release()
+    cv2.destroyAllWindows()
+    print(f"Output saved to: {os.path.abspath(output_path)}")
+
+video_path = "files/person3.mp4"
+run_yolo_mosse(0) 
+
