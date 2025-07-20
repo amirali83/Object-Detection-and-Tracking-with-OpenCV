@@ -3,43 +3,69 @@ from ultralytics import YOLO
 import time
 
 model = YOLO("yolov8n.pt")
-cap = cv2.VideoCapture("files/person1.mp4")
+cap = cv2.VideoCapture("files/person2.mp4")
 
 fps = cap.get(cv2.CAP_PROP_FPS)
 delay = int(1000 / fps) if fps > 0 else 33
 
 trackers = []
 labels = []
-init = False
+bboxes = []
+frame_count = 0
 
 while cap.isOpened():
     ret, frame = cap.read()
     if not ret:
         break
 
-    if not init:
+    frame_count += 1
+    if frame_count % 10 == 0:
         results = model(frame)
         boxes = results[0].boxes.xyxy
         classes = results[0].boxes.cls
-        trackers = []
-        labels = []
+        new_trackers = []
+        new_labels = []
+        new_bboxes = []
+
         for box, cls in zip(boxes, classes):
-            x1, y1, x2, y2 = box.tolist()
-            bbox = (int(x1), int(y1), int(x2 - x1), int(y2 - y1))
-            tracker = cv2.legacy.TrackerMOSSE_create()
-            tracker.init(frame, bbox)
-            trackers.append(tracker)
-            labels.append(model.names[int(cls)])
-        init = True
-        annotated_frame = results[0].plot()
-    else:
-        annotated_frame = frame.copy()
-        for tracker, label in zip(trackers, labels):
-            success, bbox = tracker.update(frame)
-            if success:
-                x, y, w, h = [int(v) for v in bbox]
+            x1, y1, x2, y2 = map(int, box.tolist())
+            new_box = (x1, y1, x2 - x1, y2 - y1)
+            matched = False
+            for existing_box in bboxes:
+                ex, ey, ew, eh = existing_box
+                if abs(x1 - ex) < 30 and abs(y1 - ey) < 30:
+                    matched = True
+                    break
+            if not matched:
+                tracker = cv2.legacy.TrackerMOSSE_create()
+                tracker.init(frame, new_box)
+                new_trackers.append(tracker)
+                new_labels.append(model.names[int(cls)])
+                new_bboxes.append(new_box)
+
+        trackers.extend(new_trackers)
+        labels.extend(new_labels)
+        bboxes.extend(new_bboxes)
+
+    annotated_frame = frame.copy()
+    updated_trackers = []
+    updated_labels = []
+    updated_bboxes = []
+
+    for tracker, label in zip(trackers, labels):
+        success, bbox = tracker.update(frame)
+        if success:
+            x, y, w, h = [int(v) for v in bbox]
+            if w > 0 and h > 0:
                 cv2.rectangle(annotated_frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
                 cv2.putText(annotated_frame, label, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
+                updated_trackers.append(tracker)
+                updated_labels.append(label)
+                updated_bboxes.append((x, y, w, h))
+
+    trackers = updated_trackers
+    labels = updated_labels
+    bboxes = updated_bboxes
 
     cv2.imshow("YOLO + MOSSE Tracking", annotated_frame)
     if cv2.waitKey(delay) & 0xFF == ord("q"):
