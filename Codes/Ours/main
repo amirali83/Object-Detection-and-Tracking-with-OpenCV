@@ -4,34 +4,37 @@ import time
 
 model = YOLO("yolov8n.pt")
 cap = cv2.VideoCapture("files/person1.mp4")
-tracker = cv2.legacy.TrackerMOSSE_create()
-tracking = False
 
 fps = cap.get(cv2.CAP_PROP_FPS)
 delay = int(1000 / fps) if fps > 0 else 33
+
+trackers = []
+init = False
 
 while cap.isOpened():
     ret, frame = cap.read()
     if not ret:
         break
 
-    if not tracking:
+    if not init:
         results = model(frame)
         boxes = results[0].boxes.xyxy
-        if len(boxes) > 0:
-            x1, y1, x2, y2 = boxes[0].tolist()
+        trackers = []
+        for box in boxes:
+            x1, y1, x2, y2 = box.tolist()
             bbox = (int(x1), int(y1), int(x2 - x1), int(y2 - y1))
+            tracker = cv2.legacy.TrackerMOSSE_create()
             tracker.init(frame, bbox)
-            tracking = True
-            annotated_frame = results[0].plot()
-        else:
-            annotated_frame = frame
+            trackers.append(tracker)
+        init = True
+        annotated_frame = results[0].plot()
     else:
-        success, bbox = tracker.update(frame)
-        if success:
-            x, y, w, h = [int(v) for v in bbox]
-            cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
-        annotated_frame = frame
+        annotated_frame = frame.copy()
+        for tracker in trackers:
+            success, bbox = tracker.update(frame)
+            if success:
+                x, y, w, h = [int(v) for v in bbox]
+                cv2.rectangle(annotated_frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
     cv2.imshow("YOLO + MOSSE Tracking", annotated_frame)
     if cv2.waitKey(delay) & 0xFF == ord("q"):
