@@ -1,12 +1,33 @@
 import cv2
 from ultralytics import YOLO
 import time
+import math
 
 model = YOLO("yolov8n.pt")
-cap = cv2.VideoCapture("files/person1.mp4")
+cap = cv2.VideoCapture("files/person2.mp4")
 
 fps = cap.get(cv2.CAP_PROP_FPS)
 delay = int(1000 / fps) if fps > 0 else 33
+
+def iou(box1, box2):
+    x1, y1, w1, h1 = box1
+    x2, y2, w2, h2 = box2
+    xi1 = max(x1, x2)
+    yi1 = max(y1, y2)
+    xi2 = min(x1 + w1, x2 + w2)
+    yi2 = min(y1 + h1, y2 + h2)
+    inter_area = max(0, xi2 - xi1) * max(0, yi2 - yi1)
+    box1_area = w1 * h1
+    box2_area = w2 * h2
+    union_area = box1_area + box2_area - inter_area
+    return inter_area / union_area if union_area != 0 else 0
+
+def center_distance(box1, box2):
+    x1, y1, w1, h1 = box1
+    x2, y2, w2, h2 = box2
+    cx1, cy1 = x1 + w1 / 2, y1 + h1 / 2
+    cx2, cy2 = x2 + w2 / 2, y2 + h2 / 2
+    return math.hypot(cx1 - cx2, cy1 - cy2)
 
 trackers = []
 labels = []
@@ -14,6 +35,9 @@ bboxes = []
 missed_frames = []
 frame_count = 0
 max_missed = 10
+match_distance_thresh = 50
+
+detected_ids = set()
 
 prev_time = time.time()
 
@@ -36,8 +60,7 @@ while cap.isOpened():
             new_box = (x1, y1, x2 - x1, y2 - y1)
             matched = False
             for existing_box in bboxes:
-                ex, ey, ew, eh = existing_box
-                if abs(x1 - ex) < 30 and abs(y1 - ey) < 30:
+                if iou(new_box, existing_box) > 0.5 or center_distance(new_box, existing_box) < match_distance_thresh:
                     matched = True
                     break
             if not matched:
