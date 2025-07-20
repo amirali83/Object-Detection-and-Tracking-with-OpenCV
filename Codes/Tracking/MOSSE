@@ -43,3 +43,33 @@ def create_tracker():
         if not ret:
             break
         frame_count += 1
+
+        if frame_count % detection_interval == 1 or len(trackers) == 0:
+            results = model.predict(source=frame, conf=conf_threshold)
+            detections = results[0].boxes
+
+            trackers = []
+            labels = []
+
+            for box in detections:
+                x1, y1, x2, y2 = map(int, box.xyxy[0])
+                bbox = (x1, y1, x2 - x1, y2 - y1)
+                label = model.names[int(box.cls[0])]
+
+                tracker = create_tracker()
+                tracker.init(frame, bbox)
+                trackers.append(tracker)
+                labels.append(label)
+
+        else:
+            for i, tracker in enumerate(trackers):
+                success, bbox = tracker.update(frame)
+                if success:
+                    x, y, w, h = tuple(map(int, bbox))
+                    cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 255), 2)
+                    cv2.putText(frame, labels[i], (x, y - 10),
+                                cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 255), 2)
+                else:
+                    cv2.putText(frame, f"Lost {labels[i]}", (10, 30 + 30 * i),
+                                cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
+
