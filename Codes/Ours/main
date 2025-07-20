@@ -27,6 +27,7 @@ reid_model.eval()
 
 track_id_counter = 0
 
+
 def iou(box1, box2):
     x1, y1, w1, h1 = box1
     x2, y2, w2, h2 = box2
@@ -40,12 +41,14 @@ def iou(box1, box2):
     union_area = box1_area + box2_area - inter_area
     return inter_area / union_area if union_area != 0 else 0
 
+
 def center_distance(box1, box2):
     x1, y1, w1, h1 = box1
     x2, y2, w2, h2 = box2
     cx1, cy1 = x1 + w1 / 2, y1 + h1 / 2
     cx2, cy2 = x2 + w2 / 2, y2 + h2 / 2
     return math.hypot(cx1 - cx2, cy1 - cy2)
+
 
 def extract_embedding(frame, bbox):
     x, y, w, h = [int(v) for v in bbox]
@@ -56,6 +59,7 @@ def extract_embedding(frame, bbox):
     with torch.no_grad():
         emb = reid_model(tensor)
     return emb.squeeze()
+
 
 class Track:
     def __init__(self, tracker, label, bbox, embedding):
@@ -87,6 +91,7 @@ class Track:
         self.kalman.correct(np.array([[np.float32(cx)], [np.float32(cy)]]))
         self.bbox = bbox
 
+
 tracks = []
 frame_count = 0
 max_missed = 10
@@ -100,10 +105,12 @@ while cap.isOpened():
         break
 
     frame_count += 1
-    if frame_count % 10 == 0:
+    if frame_count % 5 == 0:
         results = model(frame)
         boxes = results[0].boxes.xyxy
         classes = results[0].boxes.cls
+
+        matched_ids = set()
 
         for box, cls in zip(boxes, classes):
             x1, y1, x2, y2 = map(int, box.tolist())
@@ -111,14 +118,28 @@ while cap.isOpened():
             new_emb = extract_embedding(frame, new_box)
             matched = False
 
+            best_match = None
+            best_score = 0
+
             for track in tracks:
+                if track.id in matched_ids:
+                    continue
                 appearance_sim = F.cosine_similarity(track.embedding.unsqueeze(0), new_emb.unsqueeze(0)).item()
-                if iou(new_box, track.bbox) > 0.5 or center_distance(new_box, track.bbox) < match_distance_thresh or appearance_sim > appearance_thresh:
-                    matched = True
-                    track.correct(new_box)
-                    track.embedding = new_emb
-                    track.missed = 0
-                    break
+                if iou(new_box, track.bbox) > 0.3 or center_distance(new_box, track.bbox) < match_distance_thresh or appearance_sim > appearance_thresh:
+                    score = appearance_sim + (1 - center_distance(new_box, track.bbox) / 100)
+                    if score > best_score:
+                        best_score = score
+                        best_match = track
+
+            if best_match:
+                best_match.correct(new_box)
+                best_match.embedding = new_emb
+                best_match.missed = 0
+                tracker = cv2.TrackerKCF_create()
+                tracker.init(frame, new_box)
+                best_match.tracker = tracker
+                matched_ids.add(best_match.id)
+                matched = True
 
             if not matched:
                 tracker = cv2.TrackerKCF_create()
