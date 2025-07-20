@@ -54,3 +54,37 @@ def run_yolo_kcf(video_source=0, detection_interval=30, conf_threshold=0.3, outp
                 tracker.init(frame, bbox)
                 trackers.append(tracker)
                 labels.append(label)
+
+
+            else:
+              for i, tracker in enumerate(trackers):
+                success, bbox = tracker.update(frame)
+                if success:
+                    x, y, w, h = tuple(map(int, bbox))
+                    cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+                    cv2.putText(frame, labels[i], (x, y - 10),
+                                cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
+                else:
+                    cv2.putText(frame, f"Lost {labels[i]}", (10, 30 + 30 * i),
+                                cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
+
+        end_time = time.time()
+        frame_time = end_time - start_time
+        total_time += frame_time
+
+        fps = frame_count / total_time
+        cv2.putText(frame, f"FPS: {fps:.2f}", (10, 30),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 0, 0), 2)
+
+        cv2.imshow("YOLO + KCF", frame)
+        out.write(frame)  
+
+        if cv2.waitKey(1) & 0xFF == 27:  
+            break
+
+    cap.release()
+    out.release()  
+    cv2.destroyAllWindows()
+
+
+run_yolo_kcf(video_source="files/person3.mp4", output_file="output.mp4")
