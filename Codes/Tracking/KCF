@@ -23,3 +23,34 @@ def run_yolo_kcf(video_source=0, detection_interval=30, conf_threshold=0.3, outp
 
     fourcc = cv2.VideoWriter_fourcc(*'XVID')  
     out = cv2.VideoWriter(output_file, fourcc, fps_input, (width, height))
+
+    
+
+    trackers = []
+    labels = []
+    frame_count = 0
+    total_time = 0
+
+    while True:
+        start_time = time.time()
+        ret, frame = cap.read()
+        if not ret:
+            break
+        frame_count += 1
+
+        if frame_count % detection_interval == 1 or len(trackers) == 0:
+            results = model.predict(source=frame, conf=conf_threshold)
+            detections = results[0].boxes
+
+            trackers = []
+            labels = []
+
+            for box in detections:
+                x1, y1, x2, y2 = map(int, box.xyxy[0])
+                bbox = (x1, y1, x2 - x1, y2 - y1)
+                label = model.names[int(box.cls[0])]
+
+                tracker = create_tracker()
+                tracker.init(frame, bbox)
+                trackers.append(tracker)
+                labels.append(label)
