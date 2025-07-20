@@ -364,14 +364,57 @@ Best Use Case               & Real-time speed    & Balanced       & Complex trac
 \end{table}
 
 \section{Our Algorithm}
-There are some factors that we should consider to write our own algorithm.
+
+You can access the code at \href{https://github.com/amirali83/Signal_Project_2025}{this GitHub repository}. \\
+Now, let's discuss the steps taken to develop the final code.
+
+\subsection{Step One}
+
+We start by using YOLO to detect objects that appear in the video.
+Typically, YOLO is run once at the beginning to detect objects, and then tracking algorithms maintain their locations 
+across frames. However, our goal included detecting any new objects entering the scene at any time. 
+To achieve this, we run YOLO every 5 frames to identify newly appeared objects. This approach allows us to continuously 
+detect new entries but can sometimes create an illusion of continuous tracking because objects are re-detected frequently. 
+The output of this step is a video with bounding boxes drawn around detected objects at regular intervals.
+
+
+\subsection{Step Two}
+
+We evaluated three different tracking algorithms but faced a major constraint: the system needed to run in real-time. 
+Additionally, it was essential for the tracker to maintain object identities even during occlusions. 
+Considering these requirements, we chose the KCF (Kernelized Correlation Filter) algorithm, as it offers a good balance between speed and robustness. 
+Furthermore, our solution supports multi-object tracking and assigns a unique ID to each tracked object, ensuring consistent identification throughout the video.
+
+\subsection{Step three}
+
+One approach we implemented was using a Kalman Filter for motion prediction. 
+This technique enabled smoother and more accurate object tracking by estimating the object's future position based on its past movement.
+
+\subsection{Step Four}
+
+After that are some small details like:
 
 \begin{itemize}
-    \item At first there is the fact that we should do this process in real-time.
-    \item Some objects may go outside of screen and some new ones may come inside of it.
-    \item Algorithm should be able to if an object temporary goes behind another object maintain the box.
-    \item There should not be a huge FPS drop.
+    \item Dynamic Bounding Box Resizing
+    \item Duplicate Detection Suppression
+    \item FPS Display
 \end{itemize}
+
+\subsection{Step Five}
+
+\subsubsection{Appearance-Based Re-Identification (ReID)}
+
+One of the advanced features we experimented with was Appearance-Based Re-Identification (ReID). 
+Although the results did not fully meet our expectations, the core idea was to maintain a consistent identity for each object across frames—even when it temporarily leaves and re-enters the scene. 
+For instance, if an object is assigned ID number 4 when it first appears, ReID aims to ensure it retains the same ID when it comes back into view later.
+
+\subsubsection{How it Works}
+
+ReID operates by extracting distinctive appearance features from each detected object and matching them against previously seen objects. 
+This is done using a pre-trained neural network—specifically, ResNet-18—as a feature extractor. The extracted features are then compared using cosine similarity to determine if a newly detected object closely resembles any of the previously tracked objects.
+
+We could use deeper ReID but we did not want this function disturb our real-time ability.
+
 
 
 \end{document}
