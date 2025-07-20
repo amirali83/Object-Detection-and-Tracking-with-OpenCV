@@ -37,7 +37,7 @@
 }
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{Introduction to Queueing Theory}
+\fancyhead[L]{Detection and Tracking}
 \fancyhead[R]{\thepage}
 
 \begin{document}
@@ -121,7 +121,7 @@ Given an input image, YOLO provides:
 
 \subsubsection{Implementation Examples}
 
-You can access the code at \href{https://github.com/amirali83/Signal_Project_2025}{this GitHub repository}.
+You can access the code at \href{https://github.com/amirali83/Signal_Project_2025/tree/main/Codes/Detection}{this GitHub repository}.
 These are some examples using code above.
 
 \begin{figure}[H]
@@ -197,7 +197,7 @@ It is based on R-CNN and Fast R-CNN and also using RPN (Region Proposal Network)
 
 \subsubsection{Implementation Examples}
 
-You can access the code at \href{https://github.com/amirali83/Signal_Project_2025}{this GitHub repository}.
+You can access the code at \href{https://github.com/amirali83/Signal_Project_2025/tree/main/Codes/Detection}{this GitHub repository}.
 These are some examples using code above.
 
 \begin{figure}[H]
@@ -279,7 +279,7 @@ There are four main steps:
 
 \subsubsection{Implementation Examples}
 
-You can access the code at \href{https://github.com/amirali83/Signal_Project_2025}{this GitHub repository}. \\
+You can access the code at \href{https://github.com/amirali83/Signal_Project_2025/tree/main/Codes/Tracking}{this GitHub repository}. \\
 Also you can see the results in \href{https://github.com/amirali83/Signal_Project_2025/tree/main/Results/CSRT}{this GitHub repository}.
 
 \subsection{MOSSE}
@@ -294,8 +294,8 @@ And at last by updating the model it will try to get better results.
 
 \subsubsection{Implementation Examples}
 
-You can access the code at \href{https://github.com/amirali83/Signal_Project_2025}{this GitHub repository}. \\
-Also you can see the results in \href{https://github.com/amirali83/Signal_Project_2025/tree/main/Results/CSRT}{this GitHub repository}.
+You can access the code at \href{https://github.com/amirali83/Signal_Project_2025/tree/main/Codes/Tracking}{this GitHub repository}. \\
+Also you can see the results in \href{https://github.com/amirali83/Signal_Project_2025/tree/main/Results/MOSSE}{this GitHub repository}.
 
 \subsection{KCF}
 
@@ -321,8 +321,8 @@ Like last part we are not going to focus on the math behind it but key points.
 And finally by updating model it will try to get better.
 \subsubsection{Implementation Examples}
 
-You can access the code at \href{https://github.com/amirali83/Signal_Project_2025}{this GitHub repository}. \\
-Also you can see the results in \href{https://github.com/amirali83/Signal_Project_2025/tree/main/Results/CSRT}{this GitHub repository}.
+You can access the code at \href{https://github.com/amirali83/Signal_Project_2025/tree/main/Codes/Tracking}{this GitHub repository}. \\
+Also you can see the results in \href{https://github.com/amirali83/Signal_Project_2025/tree/main/Results/KCF}{this GitHub repository}.
 
 \subsection{Overall Conclusion}
 Based on the observed FPS (frames per second) from each tracking method, and considering that the main priority is to achieve real-time performance, the CSRT algorithm is clearly not suitable for our needs due to its relatively slow speed.
@@ -365,7 +365,7 @@ Best Use Case               & Real-time speed    & Balanced       & Complex trac
 
 \section{Our Algorithm}
 
-You can access the code at \href{https://github.com/amirali83/Signal_Project_2025}{this GitHub repository}. \\
+You can access the code at \href{https://github.com/amirali83/Signal_Project_2025/tree/main/Codes/Ours}{this GitHub repository}. \\
 Now, let's discuss the steps taken to develop the final code.
 
 \subsection{Step One}
@@ -414,7 +414,5 @@ ReID operates by extracting distinctive appearance features from each detected o
 This is done using a pre-trained neural network—specifically, ResNet-18—as a feature extractor. The extracted features are then compared using cosine similarity to determine if a newly detected object closely resembles any of the previously tracked objects.
 
 We could use deeper ReID but we did not want this function disturb our real-time ability.
-
-
 
 \end{document}
