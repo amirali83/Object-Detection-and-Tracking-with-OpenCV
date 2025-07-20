@@ -9,6 +9,7 @@ fps = cap.get(cv2.CAP_PROP_FPS)
 delay = int(1000 / fps) if fps > 0 else 33
 
 trackers = []
+labels = []
 init = False
 
 while cap.isOpened():
@@ -19,22 +20,26 @@ while cap.isOpened():
     if not init:
         results = model(frame)
         boxes = results[0].boxes.xyxy
+        classes = results[0].boxes.cls
         trackers = []
-        for box in boxes:
+        labels = []
+        for box, cls in zip(boxes, classes):
             x1, y1, x2, y2 = box.tolist()
             bbox = (int(x1), int(y1), int(x2 - x1), int(y2 - y1))
             tracker = cv2.legacy.TrackerMOSSE_create()
             tracker.init(frame, bbox)
             trackers.append(tracker)
+            labels.append(model.names[int(cls)])
         init = True
         annotated_frame = results[0].plot()
     else:
         annotated_frame = frame.copy()
-        for tracker in trackers:
+        for tracker, label in zip(trackers, labels):
             success, bbox = tracker.update(frame)
             if success:
                 x, y, w, h = [int(v) for v in bbox]
                 cv2.rectangle(annotated_frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+                cv2.putText(annotated_frame, label, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
 
     cv2.imshow("YOLO + MOSSE Tracking", annotated_frame)
     if cv2.waitKey(delay) & 0xFF == ord("q"):
