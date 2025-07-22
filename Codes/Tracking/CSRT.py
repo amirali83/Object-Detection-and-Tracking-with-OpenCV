@@ -13,3 +13,17 @@ def create_csrt_tracker():
         return cv2.legacy.TrackerCSRT_create()
     else:
         return cv2.TrackerCSRT_create()
+
+ret, frame = cap.read()
+if not ret:
+    print("Failed to read video")
+    exit()
+
+frame_height, frame_width = frame.shape[:2]
+fps_input = cap.get(cv2.CAP_PROP_FPS)
+if fps_input == 0:
+    fps_input = 25
+
+output_path = "output_tracked.mp4"
+fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+out = cv2.VideoWriter(output_path, fourcc, fps_input, (frame_width, frame_height))
