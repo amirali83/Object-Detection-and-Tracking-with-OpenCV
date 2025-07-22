@@ -34,3 +34,45 @@ frame_count = 0
 detect_interval = 30  
 
 prev_time = time.time()
+
+while True:
+    ret, frame = cap.read()
+    if not ret:
+        break
+
+    frame_count += 1
+
+    if frame_count % detect_interval == 1:
+        results = model.predict(frame, conf=0.5)
+        trackers.clear()
+        labels.clear()
+
+        for result in results:
+            for box in result.boxes:
+                cls = int(box.cls[0])
+                label = model.names[cls]
+                x1, y1, x2, y2 = map(int, box.xyxy[0])
+                tracker = create_csrt_tracker()
+                tracker.init(frame, (x1, y1, x2 - x1, y2 - y1))
+                trackers.append(tracker)
+                labels.append(label)
+
+    for i, tracker in enumerate(trackers):
+        success, box = tracker.update(frame)
+        if success:
+            x, y, w, h = map(int, box)
+            cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+            cv2.putText(frame, labels[i], (x, y - 10),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
+
+    current_time = time.time()
+    fps = 1 / (current_time - prev_time)
+    prev_time = current_time
+    cv2.putText(frame, f"FPS: {fps:.2f}", (10, 25),
+                cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 255), 2)
+
+    cv2.imshow("YOLO + CSRT Tracker", frame)
+    out.write(frame)
+
+    if cv2.waitKey(1) & 0xFF == 27:  
+        break
