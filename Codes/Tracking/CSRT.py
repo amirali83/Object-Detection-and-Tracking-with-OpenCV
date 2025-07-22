@@ -27,3 +27,10 @@ if fps_input == 0:
 output_path = "output_tracked.mp4"
 fourcc = cv2.VideoWriter_fourcc(*'mp4v')
 out = cv2.VideoWriter(output_path, fourcc, fps_input, (frame_width, frame_height))
+
+trackers = []
+labels = []
+frame_count = 0
+detect_interval = 30  
+
+prev_time = time.time()
