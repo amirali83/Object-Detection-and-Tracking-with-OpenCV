@@ -9,7 +9,7 @@ from torchvision.models import resnet18
 import torch.nn.functional as F
 
 model = YOLO("yolov8n.pt")
-cap = cv2.VideoCapture("C:\\Users\\shaya\\Downloads\\videos\\person4.mp4")
+cap = cv2.VideoCapture("files/person1.mp4")
 
 fps = cap.get(cv2.CAP_PROP_FPS)
 delay = int(1000 / fps) if fps > 0 else 33
@@ -21,7 +21,8 @@ transform = T.Compose([
     T.Normalize([0.5]*3, [0.5]*3)
 ])
 
-reid_model = resnet18(pretrained=True)
+from torchvision.models import ResNet18_Weights
+reid_model = resnet18(weights=ResNet18_Weights.IMAGENET1K_V1)
 reid_model.fc = torch.nn.Identity()
 reid_model.eval()
 
