@@ -1,10 +1,13 @@
 import cv2
+import numpy as np
 from ultralytics import YOLO
 
-model = YOLO("yolov5s.pt")  
+model = YOLO("yolov5s.pt")
 
 source = "files/person1.mp4"
 cap = cv2.VideoCapture(source)
+
+feature_params = dict(maxCorners=100, qualityLevel=0.3, minDistance=7, blockSize=7)
 
 while True:
     ret, frame = cap.read()
@@ -13,17 +16,36 @@ while True:
 
     results = model(frame)[0]
 
+    feature_points = None
+
     for det in results.boxes:
         x1, y1, x2, y2 = map(int, det.xyxy[0])
-        conf = det.conf[0]
         cls = int(det.cls[0])
         label = model.names[cls]
 
-        cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
-        cv2.putText(frame, f"{label} {conf:.2f}", (x1, y1 - 10),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
+        if label != "person":
+            continue 
 
-    cv2.imshow("YOLO Detection", frame)
+        cv2.rectangle(frame, (x1, y1), (x2, y2), (255, 0, 0), 2)
+        cv2.putText(frame, label, (x1, y1 - 10),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 0), 2)
+
+        roi_gray = cv2.cvtColor(frame[y1:y2, x1:x2], cv2.COLOR_BGR2GRAY)
+
+        corners = cv2.goodFeaturesToTrack(roi_gray, mask=None, **feature_params)
+
+        if corners is not None:
+            corners[:, 0, 0] += x1
+            corners[:, 0, 1] += y1
+            feature_points = corners.astype(np.float32)
+
+            for pt in feature_points:
+                x, y = pt.ravel()
+                cv2.circle(frame, (int(x), int(y)), 3, (0, 255, 255), -1)
+
+        break 
+
+    cv2.imshow("YOLO + Feature Extraction", frame)
     if cv2.waitKey(1) == 27: 
         break
 
