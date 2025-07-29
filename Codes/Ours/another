@@ -2,51 +2,76 @@ import cv2
 import numpy as np
 from ultralytics import YOLO
 
+
 model = YOLO("yolov5s.pt")
 
 source = "files/person1.mp4"
 cap = cv2.VideoCapture(source)
 
 feature_params = dict(maxCorners=100, qualityLevel=0.3, minDistance=7, blockSize=7)
+lk_params = dict(winSize=(15, 15), maxLevel=2, criteria=(cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, 10, 0.03))
+
+prev_gray = None
+prev_pts = None
+tracking = False
 
 while True:
     ret, frame = cap.read()
     if not ret:
         break
 
-    results = model(frame)[0]
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-    feature_points = None
+    if tracking and prev_pts is not None:
+        next_pts, status, _ = cv2.calcOpticalFlowPyrLK(prev_gray, gray, prev_pts, None, **lk_params)
 
-    for det in results.boxes:
-        x1, y1, x2, y2 = map(int, det.xyxy[0])
-        cls = int(det.cls[0])
-        label = model.names[cls]
+        good_new = next_pts[status == 1]
+        good_old = prev_pts[status == 1]
 
-        if label != "person":
-            continue 
+        for new in good_new:
+            x, y = new.ravel()
+            cv2.circle(frame, (int(x), int(y)), 3, (0, 255, 255), -1)
 
-        cv2.rectangle(frame, (x1, y1), (x2, y2), (255, 0, 0), 2)
-        cv2.putText(frame, label, (x1, y1 - 10),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 0), 2)
+        prev_pts = good_new.reshape(-1, 1, 2)
+        prev_gray = gray.copy()
 
-        roi_gray = cv2.cvtColor(frame[y1:y2, x1:x2], cv2.COLOR_BGR2GRAY)
+        if len(prev_pts) < 10:
+            tracking = False
 
-        corners = cv2.goodFeaturesToTrack(roi_gray, mask=None, **feature_params)
+    else:
+        results = model(frame)[0]
+        found = False
 
-        if corners is not None:
-            corners[:, 0, 0] += x1
-            corners[:, 0, 1] += y1
-            feature_points = corners.astype(np.float32)
+        for det in results.boxes:
+            x1, y1, x2, y2 = map(int, det.xyxy[0])
+            cls = int(det.cls[0])
+            label = model.names[cls]
 
-            for pt in feature_points:
-                x, y = pt.ravel()
-                cv2.circle(frame, (int(x), int(y)), 3, (0, 255, 255), -1)
+            if label != "person":
+                continue
 
-        break 
+            cv2.rectangle(frame, (x1, y1), (x2, y2), (255, 0, 0), 2)
+            cv2.putText(frame, label, (x1, y1 - 10),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 0), 2)
 
-    cv2.imshow("YOLO + Feature Extraction", frame)
-    if cv2.waitKey(1) == 27: 
+            roi_gray = gray[y1:y2, x1:x2]
+            corners = cv2.goodFeaturesToTrack(roi_gray, mask=None, **feature_params)
+
+            if corners is not None:
+                corners[:, 0, 0] += x1
+                corners[:, 0, 1] += y1
+                prev_pts = corners.astype(np.float32)
+                prev_gray = gray.copy()
+                tracking = True
+                found = True
+
+                for pt in prev_pts:
+                    x, y = pt.ravel()
+                    cv2.circle(frame, (int(x), int(y)), 3, (0, 255, 255), -1)
+            break 
+
+    cv2.imshow("YOLO + Optical Flow Tracking", frame)
+    if cv2.waitKey(1) == 27:
         break
 
 cap.release()
