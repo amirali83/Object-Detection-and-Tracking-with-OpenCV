@@ -1,8 +1,8 @@
-PWD c:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex
+PWD c:/Users/amira/Desktop/mainproj(1)/Signal_Project_2025/latex
 INPUT c:/texlive/2024/texmf.cnf
 INPUT c:/texlive/2024/texmf-dist/web2c/texmf.cnf
 INPUT c:/texlive/2024/texmf-var/web2c/pdftex/pdflatex.fmt
-INPUT c:/Users/amira/Desktop/mainproj/Signal_Project_2025/latex/Untitled-1.tex
+INPUT c:/Users/amira/Desktop/mainproj(1)/Signal_Project_2025/latex/Untitled-1.tex
 OUTPUT Untitled-1.log
 INPUT c:/texlive/2024/texmf-dist/tex/latex/base/article.cls
 INPUT c:/texlive/2024/texmf-dist/tex/latex/base/article.cls
