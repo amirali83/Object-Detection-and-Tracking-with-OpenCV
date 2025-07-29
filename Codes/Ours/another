@@ -2,7 +2,6 @@ import cv2
 import numpy as np
 from ultralytics import YOLO
 
-
 model = YOLO("yolov5s.pt")
 
 source = "files/person1.mp4"
@@ -11,9 +10,21 @@ cap = cv2.VideoCapture(source)
 feature_params = dict(maxCorners=100, qualityLevel=0.3, minDistance=7, blockSize=7)
 lk_params = dict(winSize=(15, 15), maxLevel=2, criteria=(cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, 10, 0.03))
 
+kalman = cv2.KalmanFilter(4, 2)
+kalman.measurementMatrix = np.array([[1, 0, 0, 0],
+                                    [0, 1, 0, 0]], np.float32)
+
+kalman.transitionMatrix = np.array([[1, 0, 1, 0],
+                                    [0, 1, 0, 1],
+                                    [0, 0, 1, 0],
+                                    [0, 0, 0, 1]], np.float32)
+
+kalman.processNoiseCov = np.eye(4, dtype=np.float32) * 0.03
+
 prev_gray = None
 prev_pts = None
 tracking = False
+object_center = None
 
 while True:
     ret, frame = cap.read()
@@ -28,20 +39,23 @@ while True:
         good_new = next_pts[status == 1]
         good_old = prev_pts[status == 1]
 
-        for new in good_new:
-            x, y = new.ravel()
-            cv2.circle(frame, (int(x), int(y)), 3, (0, 255, 255), -1)
+        if len(good_new) > 0:
+            object_center = np.mean(good_new, axis=0).reshape(2, 1)
 
-        prev_pts = good_new.reshape(-1, 1, 2)
-        prev_gray = gray.copy()
+            kalman.correct(object_center)
 
-        if len(prev_pts) < 10:
+            for pt in good_new:
+                x, y = pt.ravel()
+                cv2.circle(frame, (int(x), int(y)), 3, (0, 255, 255), -1)
+
+            prev_pts = good_new.reshape(-1, 1, 2)
+            prev_gray = gray.copy()
+
+        else:
             tracking = False
 
-    else:
+    if not tracking:
         results = model(frame)[0]
-        found = False
-
         for det in results.boxes:
             x1, y1, x2, y2 = map(int, det.xyxy[0])
             cls = int(det.cls[0])
@@ -49,10 +63,6 @@ while True:
 
             if label != "person":
                 continue
-
-            cv2.rectangle(frame, (x1, y1), (x2, y2), (255, 0, 0), 2)
-            cv2.putText(frame, label, (x1, y1 - 10),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 0), 2)
 
             roi_gray = gray[y1:y2, x1:x2]
             corners = cv2.goodFeaturesToTrack(roi_gray, mask=None, **feature_params)
@@ -63,14 +73,20 @@ while True:
                 prev_pts = corners.astype(np.float32)
                 prev_gray = gray.copy()
                 tracking = True
-                found = True
 
-                for pt in prev_pts:
-                    x, y = pt.ravel()
-                    cv2.circle(frame, (int(x), int(y)), 3, (0, 255, 255), -1)
-            break 
+                object_center = np.mean(prev_pts, axis=0).reshape(2, 1)
+                kalman.statePre[:2] = object_center
+                kalman.statePre[2:] = 0
+                kalman.statePost = kalman.statePre.copy()
+            break
 
-    cv2.imshow("YOLO + Optical Flow Tracking", frame)
+    predicted = kalman.predict()
+    pred_x, pred_y = int(predicted[0]), int(predicted[1])
+    cv2.circle(frame, (pred_x, pred_y), 8, (0, 0, 255), 2)
+    cv2.putText(frame, "Kalman Prediction", (pred_x + 5, pred_y - 5),
+                cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1)
+
+    cv2.imshow("YOLO + Optical Flow + Kalman", frame)
     if cv2.waitKey(1) == 27:
         break
 
