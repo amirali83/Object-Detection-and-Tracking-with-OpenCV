@@ -4,7 +4,7 @@ from ultralytics import YOLO
 
 model = YOLO("yolov5s.pt")
 
-source = "files/person2.mp4"
+source = "files/test.mp4"
 cap = cv2.VideoCapture(source)
 
 fps = cap.get(cv2.CAP_PROP_FPS)
@@ -78,7 +78,7 @@ while True:
                 kalman.statePost = kalman.statePre.copy()
 
                 object_label = label 
-            break
+                break
 
     predicted = kalman.predict()
     pred_x, pred_y = int(predicted[0]), int(predicted[1])
