@@ -363,8 +363,9 @@ Best Use Case               & Real-time speed    & Balanced       & Complex trac
 \label{tab:trackers}
 \end{table}
 
-\section{Our Algorithm}
+\section{Our Previous Algorithm}
 
+We have two algorithms cause in the first one we used KCF which we were not allowed to use and wev should have written an algorithm from scratch. \\
 You can access the code at \href{https://github.com/amirali83/Signal_Project_2025/tree/main/Codes/Ours}{this GitHub repository}. \\
 Now, let's discuss the steps taken to develop the final code.
 
@@ -414,5 +415,78 @@ ReID operates by extracting distinctive appearance features from each detected o
 This is done using a pre-trained neural network—specifically, ResNet-18—as a feature extractor. The extracted features are then compared using cosine similarity to determine if a newly detected object closely resembles any of the previously tracked objects.
 
 We could use deeper ReID but we did not want this function disturb our real-time ability.
+
+\section{Our Algorithm}
+
+You can access the code at \href{https://github.com/amirali83/Signal_Project_2025/tree/main/Codes/Ours}{this GitHub repository}. \\
+Now lets walk through this algorithm.
+
+\subsection{Detection}
+\subsubsection{Model}
+
+We were given two options for object detection: YOLO and Faster R-CNN. 
+Several factors must be considered in making this choice. One key requirement is that the program should operate in real time, prioritizing speed. 
+Faster R-CNN, while generally offering higher accuracy, is significantly slower due to its two-stage detection process. In contrast, YOLO provides sufficiently accurate results while maintaining high speed, 
+making it a more suitable choice for our real-time application.
+So we proceed with YOLO for this part.
+
+When using YOLO, the model returns a list of all detected objects within a frame. Each object is associated with a bounding box, defined by coordinates $(x_1, y_1)$ and $(x_2, y_2)$, as well as a corresponding class label. 
+
+With this output, we could proceed directly to the tracking stage. However, we extended the approach by incorporating the Shi-Tomasi corner detector to extract additional keypoints, enhancing the robustness of object tracking.
+
+\subsubsection{Shi-Tomasi Corner Detector}
+
+As the name suggests, this algorithm focuses on detecting corners within a frame, which can then be used for tracking. \\[0.5cm]
+\textbf{Why Corners?}
+
+There are several reasons why corners are advantageous for tracking:
+
+\begin{itemize}
+    \item Corners are relatively stable and easier to detect consistently across frames.
+    \item They can be extracted more reliably from the background compared to edges or flat regions.
+    \item Corners typically exhibit less motion distortion than edges or uniform areas.
+    \item They can be efficiently tracked using optical flow methods (discussed further in the tracking section).
+\end{itemize}
+
+\subsubsection{How it Works}
+
+To determine whether a pixel is a corner, we first select an $n \times n$ window (or grid) centered around the pixel.
+
+Next, we compute the structure tensor \( M \), defined as:
+
+\[
+M = \sum_{\text{window}} 
+\begin{bmatrix}
+I_x^2 & I_x I_y \\
+I_x I_y & I_y^2
+\end{bmatrix}
+\]
+
+Here, \( I_x \) and \( I_y \) represent the image gradients in the horizontal and vertical directions, respectively. The summation is performed over all pixels in the selected window.
+
+By computing the eigenvalues (\( \lambda_1 \) and \( \lambda_2 \)) of the matrix \( M \), 
+we can determine whether a given pixel corresponds to a corner. These eigenvalues represent the intensity variation in different directions within the local window. Based on their values, there are three possible interpretations:
+
+\begin{enumerate}
+    \item Both \( \lambda_1 \) and \( \lambda_2 \) are large \( \rightarrow \) the region is a \textbf{corner}.
+    \item One eigenvalue is large while the other is small \( \rightarrow \) the region is likely an \textbf{edge}.
+    \item Both \( \lambda_1 \) and \( \lambda_2 \) are small \( \rightarrow \) the region is a \textbf{flat surface}.
+\end{enumerate}
+
+\[Corner score = min( \lambda_1, \lambda_2)\]
+
+So if our corner score is bigger than a chosen number that region is a corner.
+
+\subsection{Tracking}
+
+\subsubsection{Optical Flow}
+
+\subsubsection{Pyramids}
+
+\subsubsection{Kalman Filter}
+
+\subsection{Results}
+
+\subsection{Code}
 
 \end{document}

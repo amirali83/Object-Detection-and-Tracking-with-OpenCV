@@ -18,11 +18,22 @@
 \contentsline {subsubsection}{How it Works}{7}{section*.22}%
 \contentsline {subsubsection}{Implementation Examples}{7}{section*.23}%
 \contentsline {subsection}{Overall Conclusion}{7}{section*.24}%
-\contentsline {section}{\numberline {4}Our Algorithm}{8}{section.4}%
+\contentsline {section}{\numberline {4}Our Previous Algorithm}{8}{section.4}%
 \contentsline {subsection}{Step One}{8}{section*.26}%
 \contentsline {subsection}{Step Two}{8}{section*.27}%
-\contentsline {subsection}{Step three}{8}{section*.28}%
+\contentsline {subsection}{Step three}{9}{section*.28}%
 \contentsline {subsection}{Step Four}{9}{section*.29}%
 \contentsline {subsection}{Step Five}{9}{section*.30}%
 \contentsline {subsubsection}{Appearance-Based Re-Identification (ReID)}{9}{section*.31}%
 \contentsline {subsubsection}{How it Works}{9}{section*.32}%
+\contentsline {section}{\numberline {5}Our Algorithm}{9}{section.5}%
+\contentsline {subsection}{Detection}{9}{section*.33}%
+\contentsline {subsubsection}{Model}{9}{section*.34}%
+\contentsline {subsubsection}{Shi-Tomasi Corner Detector}{10}{section*.35}%
+\contentsline {subsubsection}{How it Works}{10}{section*.36}%
+\contentsline {subsection}{Tracking}{11}{section*.37}%
+\contentsline {subsubsection}{Optical Flow}{11}{section*.38}%
+\contentsline {subsubsection}{Pyramids}{11}{section*.39}%
+\contentsline {subsubsection}{Kalman Filter}{11}{section*.40}%
+\contentsline {subsection}{Results}{11}{section*.41}%
+\contentsline {subsection}{Code}{11}{section*.42}%
