@@ -45,10 +45,6 @@ while True:
             object_center = np.mean(good_new, axis=0).reshape(2, 1)
             kalman.correct(object_center)
 
-            # for pt in good_new:
-            #     x, y = pt.ravel()
-            #     cv2.circle(frame, (int(x), int(y)), 3, (0, 255, 255), -1)
-
             prev_pts = good_new.reshape(-1, 1, 2)
             prev_gray = gray.copy()
         else:
@@ -60,7 +56,6 @@ while True:
             x1, y1, x2, y2 = map(int, det.xyxy[0])
             cls = int(det.cls[0])
             label = model.names[cls]
-
 
             roi_gray = gray[y1:y2, x1:x2]
             corners = cv2.goodFeaturesToTrack(roi_gray, mask=None, **feature_params)
@@ -101,6 +96,7 @@ while True:
             cv2.putText(frame, object_label, (top_left[0], top_left[1] - 10),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
 
+    cv2.putText(frame, f"FPS: {fps:.2f}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
     cv2.imshow("YOLO + Optical Flow + Kalman + Adaptive Box", frame)
 
     if cv2.waitKey(int(1000 / fps)) & 0xFF == 27:
