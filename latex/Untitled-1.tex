@@ -477,7 +477,7 @@ Best Use Case               & Real-time speed    & Balanced       & Complex trac
 \section{Our Previous Algorithm}
 
 We have two algorithms cause in the first one we used KCF which we were not allowed to use and wev should have written an algorithm from scratch. \\
-You can access the code at \href{https://github.com/amirali83/Signal_Project_2025/tree/main/Codes/Ours}{this GitHub repository}. \\
+You can access the code at \href{https://github.com/amirali83/Signal_Project_2025/tree/main/Codes/Ours/main}{this GitHub repository}. \\
 Now, let's discuss the steps taken to develop the final code.
 
 \subsection{Step One}
@@ -529,7 +529,7 @@ We could use deeper ReID but we did not want this function disturb our real-time
 
 \section{Our Algorithm}
 
-You can access the code at \href{https://github.com/amirali83/Signal_Project_2025/tree/main/Codes/Ours}{this GitHub repository}. \\
+You can access the code at \href{https://github.com/amirali83/Signal_Project_2025/blob/main/Codes/Ours/final}{this GitHub repository}. \\
 Now lets walk through this algorithm.
 
 \subsection{Detection}
@@ -724,6 +724,19 @@ This equation adjusts the prediction based on the difference between the predict
 Over time, this feedback mechanism allows the filter to learn and adapt, improving its accuracy — even when some frames are missing or noisy.
 
 So, the Kalman Filter uses past information to predict where the object should appear in the next frame, which is especially useful when the object is temporarily hidden or its detection fails.
+
+\subsubsection{Multi-Object Tracking}
+
+There is not much conceptually new in this section. All the techniques discussed earlier — such as object detection, optical flow, and Kalman filtering — can be reused and extended to track multiple objects simultaneously.
+
+To manage this more efficiently, we implement our tracking logic using \textbf{Object-Oriented Programming (OOP)}.  
+By defining a dedicated \texttt{Tracker} class, we encapsulate all the necessary functionality for tracking a single object. This modular design allows us to instantiate multiple trackers and handle multiple objects without significant changes to our core logic.
+
+This approach not only improves code readability and scalability but also allows easy experimentation with different tracking strategies.
+
+You can access the code in our GitHub repository:  
+\href{https://github.com/amirali83/Signal_Project_2025/blob/main/Codes/Ours/another}{here}.
+
 
 \subsubsection{Results} 
 
@@ -942,5 +955,6 @@ Releases video resources and closes all OpenCV windows after processing is compl
 
 In this project, we implemented and evaluated a hybrid object tracking system that combines YOLOv5 for object detection, optical flow for motion estimation, and a Kalman filter for prediction and smoothing. The system was tested on multiple video sequences and compared against standard tracking methods such as CSRT. Results show that the proposed approach offers a good balance between accuracy and performance, with competitive FPS and robust tracking in challenging conditions. Overall, the project objectives were successfully achieved.
 
+You cal also have access to the overall of project in \href{https://miro.com/app/board/uXjVJYlgPcI=/}{here}.
 
 \end{document}

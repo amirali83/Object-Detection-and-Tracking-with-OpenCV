@@ -39,6 +39,7 @@
 \contentsline {subsubsection}{Pyramids}{14}{section*.45}%
 \contentsline {subsubsection}{Where are we now}{15}{section*.46}%
 \contentsline {subsubsection}{Kalman Filter}{15}{section*.47}%
-\contentsline {subsubsection}{Results}{17}{section*.48}%
-\contentsline {subsection}{Code}{17}{section*.50}%
+\contentsline {subsubsection}{Multi-Object Tracking}{16}{section*.48}%
+\contentsline {subsubsection}{Results}{17}{section*.49}%
+\contentsline {subsection}{Code}{17}{section*.51}%
 \contentsline {section}{\numberline {6}Conclusion}{20}{section.6}%
