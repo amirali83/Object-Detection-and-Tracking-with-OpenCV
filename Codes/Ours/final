@@ -1,21 +1,19 @@
 import cv2
 import numpy as np
+import time
 from ultralytics import YOLO
 
 model = YOLO("yolov5s.pt")
 
-source = "files/test.mp4"
+source = "files/person1.mp4"
 cap = cv2.VideoCapture(source)
-
-fps = cap.get(cv2.CAP_PROP_FPS)
 
 feature_params = dict(maxCorners=100, qualityLevel=0.3, minDistance=7, blockSize=7)
 lk_params = dict(winSize=(15, 15), maxLevel=2, criteria=(cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, 10, 0.03))
 
 kalman = cv2.KalmanFilter(4, 2)
 kalman.measurementMatrix = np.array([[1, 0, 0, 0],
-                                    [0, 1, 0, 0]], np.float32)
-
+                                     [0, 1, 0, 0]], np.float32)
 kalman.transitionMatrix = np.array([[1, 0, 1, 0],
                                     [0, 1, 0, 1],
                                     [0, 0, 1, 0],
@@ -26,12 +24,19 @@ prev_gray = None
 prev_pts = None
 tracking = False
 object_center = None
-object_label = None 
+object_label = None
+
+prev_time = time.time()
+fps = 0
 
 while True:
     ret, frame = cap.read()
     if not ret:
         break
+
+    current_time = time.time()
+    fps = 1.0 / (current_time - prev_time)
+    prev_time = current_time
 
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
@@ -72,7 +77,7 @@ while True:
                 kalman.statePre[2:] = 0
                 kalman.statePost = kalman.statePre.copy()
 
-                object_label = label 
+                object_label = label
                 break
 
     predicted = kalman.predict()
@@ -96,10 +101,12 @@ while True:
             cv2.putText(frame, object_label, (top_left[0], top_left[1] - 10),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
 
-    cv2.putText(frame, f"FPS: {fps:.2f}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
+    cv2.putText(frame, f"FPS: {fps:.2f}", (10, 30),
+                cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
+
     cv2.imshow("YOLO + Optical Flow + Kalman + Adaptive Box", frame)
 
-    if cv2.waitKey(int(1000 / fps)) & 0xFF == 27:
+    if cv2.waitKey(1) & 0xFF == 27:
         break
 
 cap.release()

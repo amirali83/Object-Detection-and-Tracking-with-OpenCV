@@ -548,9 +548,88 @@ This coarse-to-fine approach allows us to efficiently and robustly track large m
 
 \subsubsection{Where are we now}
 
+Up to this point, we are able to detect and track an object successfully.  
+However, there are situations where an object enters a special circumstance — for example, it moves behind another object, causing a temporary \textbf{occlusion}.
+
+In such cases, we should not immediately discard the object from tracking. Instead, we aim to continue tracking it for as long as possible, even when it is not directly visible.
+
+To achieve this, we introduce the \textbf{Kalman Filter} — a powerful tool for prediction in the presence of uncertainty.  
+
 \subsubsection{Kalman Filter}
 
+The \textbf{Kalman Filter} helps us estimate the position of an object based on its previous trajectory, even if the object is temporarily occluded or not detected in the current frame.
+
+The Kalman Filter operates in two main stages:
+
+\begin{itemize}
+    \item \textbf{Prediction}
+    \item \textbf{Correction}
+\end{itemize}
+
+\textbf{Prediction} 
+
+In the prediction stage, the Kalman Filter estimates the object's position in the next frame based on its current state and motion. The basic prediction equation is:
+
+\[
+\hat{x}_{k|k-1} = A \cdot \hat{x}_{k-1|k-1}
+\]
+
+where:
+- \( \hat{x}_{k|k-1} \) is the predicted state vector at time \( k \) given observations up to time \( k-1 \),
+- \( \hat{x}_{k-1|k-1} \) is the estimated state from the previous frame,
+- \( A \) is the state transition matrix.
+
+We typically define the state vector \( x \) as:
+
+\[
+x = \begin{bmatrix}
+    x \\
+    y \\
+    dx \\
+    dy
+\end{bmatrix}
+\]
+
+This includes the position \( (x, y) \) and velocity \( (dx, dy) \) of the object. \\[0.5cm]
+\textbf{Correction}
+
+After predicting the object's next position, we compare this prediction with the actual measurement (if available).  
+If the object does not appear at the predicted location, the Kalman Filter updates its internal parameters to reduce future prediction errors.
+
+This is done using the correction (or update) equation:
+
+\[
+\hat{x}_{k|k} = \hat{x}_{k|k-1} + K \cdot (z_k - H \cdot \hat{x}_{k|k-1})
+\]
+
+where:
+- \( \hat{x}_{k|k} \) is the updated (corrected) state estimate at time \( k \),
+- \( \hat{x}_{k|k-1} \) is the predicted state estimate,
+- \( z_k \) is the actual measurement (observation) at time \( k \),
+- \( H \) is the observation model matrix,
+- \( K \) is the Kalman gain, which determines how much the prediction should be corrected based on the measurement.
+
+This equation adjusts the prediction based on the difference between the predicted observation \( H \cdot \hat{x}_{k|k-1} \) and the actual measurement \( z_k \).  
+Over time, this feedback mechanism allows the filter to learn and adapt, improving its accuracy — even when some frames are missing or noisy.
+
+So, the Kalman Filter uses past information to predict where the object should appear in the next frame, which is especially useful when the object is temporarily hidden or its detection fails.
+
+\subsubsection{Multi-Object Tracking}
+
+There is not much conceptually new in this section. All the techniques discussed earlier — such as object detection, optical flow, and Kalman filtering — can be reused and extended to track multiple objects simultaneously.
+
+To manage this more efficiently, we implement our tracking logic using \textbf{Object-Oriented Programming (OOP)}.  
+By defining a dedicated \texttt{Tracker} class, we encapsulate all the necessary functionality for tracking a single object. This modular design allows us to instantiate multiple trackers and handle multiple objects without significant changes to our core logic.
+
+This approach not only improves code readability and scalability but also allows easy experimentation with different tracking strategies.
+
+You can access the code in our GitHub repository:  
+\href{https://github.com/amirali83/Signal_Project_2025/tree/main/Codes/Ours}{click}.
+
+
 \subsection{Results}
+
+We talked about the algorithm now lets talk about the results that we get using that.
 
 \subsection{Code}
 
