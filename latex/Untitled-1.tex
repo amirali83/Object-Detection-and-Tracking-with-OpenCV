@@ -480,8 +480,73 @@ So if our corner score is bigger than a chosen number that region is a corner.
 \subsection{Tracking}
 
 \subsubsection{Optical Flow}
+There are three main types of optical flow:
+
+\begin{itemize}
+    \item \textbf{Lucas-Kanade}
+    \item \textbf{Horn-Schunck}
+    \item \textbf{Deep Learning-based methods}
+\end{itemize}
+
+In our program, we will be using the \textbf{Lucas-Kanade} method. \\
+\textbf{How It Works}
+
+First, let's discuss what tracking means. Consider a video file \( I \), where \( I(x, y, t) \) represents the pixel at coordinates \( (x, y) \) at time \( t \).  
+We say a pixel is being tracked if we can find displacements \( dx \) and \( dy \) such that:
+
+\[
+I(x, y, t) = I(x + dx, y + dy, t + 1)
+\]
+
+To solve this, we use approximations and a first-order Taylor series expansion, which leads to:
+
+\[
+I_x \cdot dx + I_y \cdot dy = -I_t
+\]
+
+Here, \( I_x \), \( I_y \), and \( I_t \) are the partial derivatives of the image with respect to \( x \), \( y \), and \( t \), respectively.
+
+This gives us one equation with two unknowns — \( dx \) and \( dy \). To address this underdetermined system, we consider a small window (or grid) of pixels around the point of interest. For example, we use a window size of \( 15 \times 15 \).  
+By applying the same equation to all pixels within this window, we obtain a solvable system of equations that allows us to estimate the motion vector \((dx, dy)\).\\ \\
+\textbf{Limitations and Improvements}
+
+There are some limitations to this approach. For instance, if a pixel undergoes a large movement between frames, the method may fail to track it accurately. Moreover, while this method is relatively fast, it can still be computationally intensive for high-resolution videos.
+
+To address these issues, we employ an image pyramid — a technique that enables tracking at multiple scales, improving both performance and robustness in the presence of large motions.
 
 \subsubsection{Pyramids}
+
+In simple terms, a pyramid is a collection of images derived from a single original image, each at progressively lower resolutions.
+
+To understand this better, consider a 2-level pyramid applied to an image \( I \) of size \( 1600 \times 800 \) pixels. We generate a new image from the original by performing two key operations:
+
+\begin{itemize}
+    \item Reduce the number of pixels in each row and column by half.
+    \item Attempt to preserve as much detail as possible from the original image.
+\end{itemize}
+
+This results in an image with only \( 25\% \) of the original resolution. \\ \\
+There are several ways to achieve this downsampling:
+
+\begin{itemize}
+    \item Remove all pixels located at odd or even indices.
+    \item Group neighboring pixels (e.g., 2-by-2 blocks) and average their values to form a new pixel.
+    \item Use specialized filtering matrices (e.g., Gaussian filters) to reduce resolution while retaining important features.
+\end{itemize}
+
+After this operation, the resulting image has a size of \( 800 \times 400 \), which we refer to as the \textbf{level 1} image. The original image is referred to as \textbf{level 0}. We can continue this process for more levels, depending on the number of pyramid levels we require. \\ \\
+\textbf{How it Works}
+
+When performing tracking using image pyramids, we start from the \textbf{highest level} of the pyramid — that is, the image with the \textbf{lowest resolution}.  
+Because this image contains fewer pixels, the tracking process is computationally efficient.
+
+Once we obtain a rough estimate of the pixel's motion at this coarse level, we move \textbf{one level down} in the pyramid — to a higher-resolution image — and \textbf{refine} our tracking result.  
+Since we already have an approximate idea of where the pixel moved, this refinement step is significantly faster and more accurate than starting from scratch at that level.
+
+We repeat this process, gradually moving down the pyramid, until we reach \textbf{level 0} (the original image).  
+This coarse-to-fine approach allows us to efficiently and robustly track large motions that would otherwise be difficult to detect at full resolution.
+
+\subsubsection{Where are we now}
 
 \subsubsection{Kalman Filter}
 
