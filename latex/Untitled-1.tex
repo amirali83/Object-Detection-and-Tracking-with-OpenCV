@@ -14,7 +14,10 @@
 \usepackage{xcolor}
 \usepackage{booktabs}
 \usepackage[table]{xcolor}
+\usepackage{tcolorbox} 
 \usepackage{float}
+\usepackage{graphicx}
+\usepackage{subcaption}
 
 \lstset{
     language=Python,            % Specify the programming language
@@ -282,6 +285,42 @@ There are four main steps:
 You can access the code at \href{https://github.com/amirali83/Signal_Project_2025/tree/main/Codes/Tracking}{this GitHub repository}. \\
 Also you can see the results in \href{https://github.com/amirali83/Signal_Project_2025/tree/main/Results/CSRT}{this GitHub repository}.
 
+\subsubsection{Results}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{C:/Users/amira/Desktop/mainproj(1)/Signal_Project_2025/Results/CSRT/FPScar1.jpg}
+        \caption{Car 1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{C:/Users/amira/Desktop/mainproj(1)/Signal_Project_2025/Results/CSRT/FPSperson1.jpg}
+        \caption{Person 1}
+    \end{subfigure}
+
+    \vspace{0.5em} % small vertical space
+
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{C:/Users/amira/Desktop/mainproj(1)/Signal_Project_2025/Results/CSRT/FPSperson2.jpg}
+        \caption{Person 2}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{C:/Users/amira/Desktop/mainproj(1)/Signal_Project_2025/Results/CSRT/FPSperson3.jpg}
+        \caption{Person 3}
+    \end{subfigure}
+
+    \caption{Tracking results using the CSRT algorithm across different videos.}
+    \label{fig:csrt-results}
+\end{figure}
+
+We can clearly observe a significant drop in FPS, with the frame rates for the four different videos being 22, 4, 6, and 8, respectively — all of which are relatively low, indicating suboptimal real-time performance.
+
 \subsection{MOSSE}
 
 Like CSRT, MOSSE is a tracking algorithm, but its strength lies in its speed. It can be used in the same scenarios as CSRT, but it may not perform as well in certain challenging situations and might fail under specific conditions.
@@ -296,6 +335,42 @@ And at last by updating the model it will try to get better results.
 
 You can access the code at \href{https://github.com/amirali83/Signal_Project_2025/tree/main/Codes/Tracking}{this GitHub repository}. \\
 Also you can see the results in \href{https://github.com/amirali83/Signal_Project_2025/tree/main/Results/MOSSE}{this GitHub repository}.
+
+\subsubsection{Results} 
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{C:/Users/amira/Desktop/mainproj(1)/Signal_Project_2025/Results/CSRT/FPScar1.jpg}
+        \caption{Car 1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{C:/Users/amira/Desktop/mainproj(1)/Signal_Project_2025/Results/MOSSE/FPSperson1.jpg}
+        \caption{Person 1}
+    \end{subfigure}
+
+    \vspace{0.5em} % small vertical space
+
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{C:/Users/amira/Desktop/mainproj(1)/Signal_Project_2025/Results/MOSSE/FPSperson2.jpg}
+        \caption{Person 2}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{C:/Users/amira/Desktop/mainproj(1)/Signal_Project_2025/Results/MOSSE/FPSperson3.jpg}
+        \caption{Person 3}
+    \end{subfigure}
+
+    \caption{Tracking results using the MOSSE algorithm across different videos.}
+    \label{fig:csrt-results}
+\end{figure}
+
+The results demonstrate both good FPS performance and acceptable tracking quality, making this approach effective and reliable overall.
 
 \subsection{KCF}
 
@@ -323,6 +398,42 @@ And finally by updating model it will try to get better.
 
 You can access the code at \href{https://github.com/amirali83/Signal_Project_2025/tree/main/Codes/Tracking}{this GitHub repository}. \\
 Also you can see the results in \href{https://github.com/amirali83/Signal_Project_2025/tree/main/Results/KCF}{this GitHub repository}.
+
+\subsubsection{Results} 
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{C:/Users/amira/Desktop/mainproj(1)/Signal_Project_2025/Results/KCF/FPScar1.jpg}
+        \caption{Car 1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{C:/Users/amira/Desktop/mainproj(1)/Signal_Project_2025/Results/KCF/FPSperson1.jpg}
+        \caption{Person 1}
+    \end{subfigure}
+
+    \vspace{0.5em} % small vertical space
+
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{C:/Users/amira/Desktop/mainproj(1)/Signal_Project_2025/Results/KCF/FPSperson2.jpg}
+        \caption{Person 2}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{C:/Users/amira/Desktop/mainproj(1)/Signal_Project_2025/Results/KCF/FPSperson3.jpg}
+        \caption{Person 3}
+    \end{subfigure}
+
+    \caption{Tracking results using the KCF algorithm across different videos.}
+    \label{fig:csrt-results}
+\end{figure}
+
+Although the FPS drop is not as significant as observed in CSRT, a slight decrease in performance is still noticeable. Additionally, the tracker does not perform reliably, and several tracking inaccuracies can be observed throughout the sequences.
 
 \subsection{Overall Conclusion}
 Based on the observed FPS (frames per second) from each tracking method, and considering that the main priority is to achieve real-time performance, the CSRT algorithm is clearly not suitable for our needs due to its relatively slow speed.
@@ -614,23 +725,222 @@ Over time, this feedback mechanism allows the filter to learn and adapt, improvi
 
 So, the Kalman Filter uses past information to predict where the object should appear in the next frame, which is especially useful when the object is temporarily hidden or its detection fails.
 
-\subsubsection{Multi-Object Tracking}
+\subsubsection{Results} 
 
-There is not much conceptually new in this section. All the techniques discussed earlier — such as object detection, optical flow, and Kalman filtering — can be reused and extended to track multiple objects simultaneously.
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{C:/Users/amira/Desktop/mainproj(1)/Signal_Project_2025/Results/OURS/FPScar1.jpg}
+        \caption{Car 1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{C:/Users/amira/Desktop/mainproj(1)/Signal_Project_2025/Results/OURS/FPSperson1.jpg}
+        \caption{Person 1}
+    \end{subfigure}
 
-To manage this more efficiently, we implement our tracking logic using \textbf{Object-Oriented Programming (OOP)}.  
-By defining a dedicated \texttt{Tracker} class, we encapsulate all the necessary functionality for tracking a single object. This modular design allows us to instantiate multiple trackers and handle multiple objects without significant changes to our core logic.
+    \vspace{0.5em} % small vertical space
 
-This approach not only improves code readability and scalability but also allows easy experimentation with different tracking strategies.
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{C:/Users/amira/Desktop/mainproj(1)/Signal_Project_2025/Results/OURS/FPSperson2.jpg}
+        \caption{Person 2}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{C:/Users/amira/Desktop/mainproj(1)/Signal_Project_2025/Results/OURS/FPSperson3.jpg}
+        \caption{Person 3}
+    \end{subfigure}
 
-You can access the code in our GitHub repository:  
-\href{https://github.com/amirali83/Signal_Project_2025/tree/main/Codes/Ours}{click}.
+    \caption{Tracking results using OUR algorithm across different videos.}
+    \label{fig:csrt-results}
+\end{figure}
 
-
-\subsection{Results}
-
-We talked about the algorithm now lets talk about the results that we get using that.
+The results are very promising, with the processing speed being so high that the video needs to be slowed down for normal viewing. Moreover, 
+one of the key targets — achieving at least \( 80\% \) of the FPS performance of CSRT — has been successfully met.
 
 \subsection{Code}
+
+\begin{tcolorbox}[colback=lightgray!20, colframe=gray!80, title=Library Imports]
+\begin{verbatim}
+import cv2
+import numpy as np
+import time
+from ultralytics import YOLO
+\end{verbatim}
+\end{tcolorbox}
+
+These lines import essential libraries: OpenCV for computer vision, NumPy for numerical operations, time for FPS calculation, and the YOLO model for object detection.
+
+\vspace{0.5em}
+\begin{tcolorbox}[colback=lightgray!20, colframe=gray!80, title=Model and Video Initialization]
+\begin{verbatim}
+model = YOLO("yolov5s.pt")
+source = "files/person1.mp4"
+cap = cv2.VideoCapture(source)
+\end{verbatim}
+\end{tcolorbox}
+
+The YOLOv5 model is loaded, the video source is set, and the video capture object is initialized to read frames.
+
+\vspace{0.5em}
+\begin{tcolorbox}[colback=lightgray!20, colframe=gray!80, title=Feature Detection Parameters]
+\begin{verbatim}
+feature_params = dict(maxCorners=100, qualityLevel=0.3, 
+minDistance=7, blockSize=7)
+lk_params = dict(winSize=(15, 15), maxLevel=2, 
+criteria=(cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, 10, 0.03))
+\end{verbatim}
+\end{tcolorbox}
+
+Defines parameters for Shi-Tomasi corner detection (to find good features to track) and Lucas-Kanade optical flow (to track those features across frames).
+
+Some of these parameters include a maximum of 100 corners to be detected, with each corner required to have a minimum quality level of 0.3. 
+Additionally, the minimum distance between any two detected corners is 7 pixels, calculated as \( \sqrt{(x_1 - x_2)^2 + (y_1 - y_2)^2} \), 
+and the search is performed within a window of size \( 7 \times 7 \).
+
+
+\vspace{0.5em}
+\begin{tcolorbox}[colback=lightgray!20, colframe=gray!80, title=Kalman Filter Initialization]
+\begin{verbatim}
+kalman = cv2.KalmanFilter(4, 2)
+kalman.measurementMatrix = np.array([[1, 0, 0, 0], [0, 1, 0, 0]], np.float32)
+kalman.transitionMatrix = np.array([[1, 0, 1, 0], 
+                                    [0, 1, 0, 1], 
+                                    [0, 0, 1, 0], 
+                                    [0, 0, 0, 1]], np.float32)
+kalman.processNoiseCov = np.eye(4, dtype=np.float32) * 0.03
+\end{verbatim}
+\end{tcolorbox}
+
+Sets up a Kalman filter to estimate and predict the object’s position and velocity, modeling motion and measurement noise.
+
+\vspace{0.5em}
+\begin{tcolorbox}[colback=lightgray!20, colframe=gray!80, title=Tracking Variables Initialization]
+\begin{verbatim}
+prev_gray = None
+prev_pts = None
+tracking = False
+object_center = None
+object_label = None
+\end{verbatim}
+\end{tcolorbox}
+
+Initializes variables to keep track of previous frame data, feature points, tracking state, and detected object info.
+
+\vspace{0.5em}
+\begin{tcolorbox}[colback=lightgray!20, colframe=gray!80, title=FPS Calculation Setup]
+\begin{verbatim}
+prev_time = time.time()
+fps = 0
+\end{verbatim}
+\end{tcolorbox}
+
+Used to calculate the frames per second dynamically during video processing.
+
+\vspace{0.5em}
+\begin{tcolorbox}[colback=lightgray!20, colframe=gray!80, title=Main Loop - Frame Processing]
+\begin{verbatim}
+while True:
+    ret, frame = cap.read()
+    if not ret:
+        break
+\end{verbatim}
+\end{tcolorbox}
+
+Reads video frames one at a time. Exits the loop when no more frames are available.
+
+\vspace{0.5em}
+\begin{tcolorbox}[colback=lightgray!20, colframe=gray!80, title=FPS Computation]
+\begin{verbatim}
+current_time = time.time()
+fps = 1.0 / (current_time - prev_time)
+prev_time = current_time
+\end{verbatim}
+\end{tcolorbox}
+
+Calculates the FPS based on the elapsed time since the last frame was processed.
+
+\vspace{0.5em}
+\begin{tcolorbox}[colback=lightgray!20, colframe=gray!80, title=Convert Frame to Grayscale]
+\begin{verbatim}
+gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+\end{verbatim}
+\end{tcolorbox}
+
+Converts the current frame to grayscale to simplify the feature tracking process.
+
+\vspace{0.5em}
+\begin{tcolorbox}[colback=lightgray!20, colframe=gray!80, title=Optical Flow Tracking]
+\begin{verbatim}
+if tracking and prev_pts is not None:
+    next_pts, status, _ = cv2.calcOpticalFlowPyrLK(prev_gray, gray, 
+    prev_pts, None, **lk_params)
+    # Filter good points and update Kalman filter
+    # Reset tracking if points lost
+\end{verbatim}
+\end{tcolorbox}
+
+If tracking is active, uses Lucas-Kanade optical flow to track points across frames and correct the Kalman filter. If tracking fails, resets tracking status.
+
+\vspace{0.5em}
+\begin{tcolorbox}[colback=lightgray!20, colframe=gray!80, title=Object Detection and Initialization]
+\begin{verbatim}
+if not tracking:
+    results = model(frame)[0]
+    for det in results.boxes:
+        # Extract bounding box and class
+        # Detect good features inside the box to track
+        # Initialize tracking and Kalman filter
+        break
+\end{verbatim}
+\end{tcolorbox}
+
+When not tracking, runs YOLO to detect objects. Initializes tracking on the detected object's features.
+
+\vspace{0.5em}
+\begin{tcolorbox}[colback=lightgray!20, colframe=gray!80, title=Kalman Prediction and Bounding Box Drawing]
+\begin{verbatim}
+predicted = kalman.predict()
+pred_x, pred_y = int(predicted[0]), int(predicted[1])
+
+# Calculate adaptive bounding box and predict center
+# Draw rectangle and label
+\end{verbatim}
+\end{tcolorbox}
+
+Predicts the object's next position with Kalman filter and draws an adaptive bounding box around the tracked features.
+
+\vspace{0.5em}
+\begin{tcolorbox}[colback=lightgray!20, colframe=gray!80, title=Display FPS and Frame]
+\begin{verbatim}
+cv2.putText(frame, f"FPS: {fps:.2f}", (10, 30), 
+            cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
+cv2.imshow("YOLO + Optical Flow + Kalman + Adaptive Box", frame)
+
+if cv2.waitKey(1) & 0xFF == 27:
+    break
+\end{verbatim}
+\end{tcolorbox}
+
+Overlays the calculated FPS on the frame and displays it. Allows exiting the loop by pressing ESC.
+
+\vspace{0.5em}
+\begin{tcolorbox}[colback=lightgray!20, colframe=gray!80, title=Cleanup]
+\begin{verbatim}
+cap.release()
+cv2.destroyAllWindows()
+\end{verbatim}
+\end{tcolorbox}
+
+Releases video resources and closes all OpenCV windows after processing is complete.
+
+\section{Conclusion}
+
+In this project, we implemented and evaluated a hybrid object tracking system that combines YOLOv5 for object detection, optical flow for motion estimation, and a Kalman filter for prediction and smoothing. The system was tested on multiple video sequences and compared against standard tracking methods such as CSRT. Results show that the proposed approach offers a good balance between accuracy and performance, with competitive FPS and robust tracking in challenging conditions. Overall, the project objectives were successfully achieved.
+
 
 \end{document}
