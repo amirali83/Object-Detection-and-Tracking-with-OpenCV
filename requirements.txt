@@ -1,0 +1,6 @@
+numpy
+scipy
+opencv-contrib-python
+ultralytics
+torch
+torchvision

@@ -84,4 +84,4 @@ def run_yolo_kcf(video_source=0, detection_interval=30, conf_threshold=0.3, outp
     cv2.destroyAllWindows()
 
 
-run_yolo_kcf(video_source="C:\\Users\\shaya\\Downloads\\videos\\person1.mp4", output_file="output.mp4")
+run_yolo_kcf(video_source="files/person1.mp4", output_file="output.mp4")

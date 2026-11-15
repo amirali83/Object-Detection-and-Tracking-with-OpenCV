@@ -94,6 +94,6 @@ def run_yolo_mosse(video_source=0, detection_interval=30, conf_threshold=0.3, ou
     cv2.destroyAllWindows()
     print(f"Output saved to: {os.path.abspath(output_path)}")
 
-video_path = "C:\\Users\\shaya\\Downloads\\videos\\person1.mp4"
+video_path = "files/person1.mp4"
 run_yolo_mosse(video_path) 
 

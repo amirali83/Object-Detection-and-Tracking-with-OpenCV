@@ -1,0 +1,36 @@
+# Local editor and operating-system files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+.env
+.env.*
+!.env.example
+# Python environments and caches
+.venv/
+venv/
+venv-*/
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+# Build and generated files
+target/
+build/
+cmake-build-*/
+*.class
+*.o
+*.obj
+*.exe
+*.log
+*.aux
+*.fdb_latexmk
+*.fls
+*.synctex.gz
+*.toc
+*.xdv
+
+*.partial
+output*.mp4
+output*.avi
+files/*output*.mp4
+files/*output*.avi
